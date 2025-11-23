@@ -33,17 +33,17 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:padding="16dp"
-                android:text="Hello, I am a ________."
+                android:text="Question"
                 android:textColor="@color/black"
                 android:textSize="24sp" />
 
         </androidx.cardview.widget.CardView>
 
         <ImageView
-            android:layout_width="280dp"
-            android:layout_height="250dp"
-            android:src="@drawable/fireman"
-            android:layout_marginTop="130dp"
+            android:id="@+id/imageView"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_marginTop="160dp"
             android:layout_gravity="center_horizontal">
         </ImageView>
 
@@ -63,7 +63,7 @@
             android:layout_margin="4dp"
             android:layout_weight="1"
             android:backgroundTint="@color/lightPurple"
-            android:text="Gardener"
+            android:text="Option 1"
             android:textColor="@color/black"
             android:textSize="20sp"
             android:elevation="10dp"
@@ -80,7 +80,7 @@
             android:layout_margin="4dp"
             android:layout_weight="1"
             android:backgroundTint="@color/lightPurple"
-            android:text="Postman"
+            android:text="Option 2"
             android:textColor="@color/black"
             android:textSize="20sp"
             android:elevation="10dp"
@@ -105,7 +105,7 @@
             android:layout_margin="4dp"
             android:layout_weight="1"
             android:backgroundTint="@color/lightPurple"
-            android:text="Fireman"
+            android:text="Option 3"
             android:textColor="@color/black"
             android:textSize="20sp"
             android:elevation="10dp"
@@ -122,7 +122,7 @@
             android:layout_margin="4dp"
             android:layout_weight="1"
             android:backgroundTint="@color/lightPurple"
-            android:text="Policeman"
+            android:text="Option 4"
             android:textColor="@color/black"
             android:textSize="20sp"
             android:elevation="10dp"
