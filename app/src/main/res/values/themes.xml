@@ -1,5 +1,18 @@
+<<<<<<< HEAD
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
     <style name="Theme.TriviaKids" parent="android:Theme.Material.Light.NoActionBar" />
+=======
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.QuizApp" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <item name="colorPrimary">@color/purple</item>
+        <item name="colorPrimaryVariant">@color/blue</item>
+        <item name="android:statusBarColor">@color/blue</item>
+    </style>
+
+    <style name="Theme.QuizApp" parent="Base.Theme.QuizApp" />
+>>>>>>> edd6fac236c91e2f74f5ee872819ea5fe3a66465
 </resources>

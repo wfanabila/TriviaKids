@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+<<<<<<< HEAD
     alias(libs.plugins.kotlin.compose)
 }
 
@@ -10,6 +11,16 @@ android {
 
     defaultConfig {
         applicationId = "com.example.triviakids"
+=======
+}
+
+android {
+    namespace = "com.example.quizapp"
+    compileSdk = 36
+
+    defaultConfig {
+        applicationId = "com.example.quizapp"
+>>>>>>> edd6fac236c91e2f74f5ee872819ea5fe3a66465
         minSdk = 24
         targetSdk = 36
         versionCode = 1
@@ -35,13 +46,20 @@ android {
         jvmTarget = "11"
     }
     buildFeatures {
+<<<<<<< HEAD
         compose = true
     }
+=======
+        viewBinding = true
+    }
+
+>>>>>>> edd6fac236c91e2f74f5ee872819ea5fe3a66465
 }
 
 dependencies {
 
     implementation(libs.androidx.core.ktx)
+<<<<<<< HEAD
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
@@ -63,4 +81,14 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:2.4.0")
     implementation("androidx.activity:activity-compose:1.3.0")
 
+=======
+    implementation(libs.androidx.appcompat)
+    implementation(libs.material)
+    implementation(libs.androidx.activity)
+    implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.ui.test)
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
+>>>>>>> edd6fac236c91e2f74f5ee872819ea5fe3a66465
 }
