@@ -31,7 +31,7 @@ fun ProfileScreen(navController: NavController) {
             painter = painterResource(id = R.drawable.pfp),
             contentDescription = "Profile Image",
             modifier = Modifier
-                .size(120.dp) // size profile
+                .size(120.dp)
                 .padding(bottom = 16.dp)
                 .clip(CircleShape)
         )
@@ -45,7 +45,7 @@ fun ProfileScreen(navController: NavController) {
             onClick = {
                 navController.navigate("edit_profile")  // Navigate to EditProfileScreen
             },
-            modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp)  // Full width button
+            modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp)
         ) {
             Text("Edit Profile")
         }
@@ -53,7 +53,7 @@ fun ProfileScreen(navController: NavController) {
         // logout
         Button(
             onClick = {
-                navController.navigate("login")  // Navigate to login
+                navController.navigate("login")  // Navigate to LoginScreen
             },
             modifier = Modifier.fillMaxWidth()
         ) {
