@@ -2,21 +2,15 @@
 <project version="4">
   <component name="deploymentTargetSelector">
     <selectionStates>
-      <SelectionState runConfigName="app">
-        <option name="selectionMode" value="DROPDOWN" />
-      </SelectionState>
-<<<<<<< HEAD
-=======
-      <SelectionState runConfigName="QuizScience">
+      <SelectionState runConfigName="QuizEnglish">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
       <SelectionState runConfigName="QuizMathematics">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="QuizEnglish">
+      <SelectionState runConfigName="app">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
->>>>>>> edd6fac236c91e2f74f5ee872819ea5fe3a66465
     </selectionStates>
   </component>
 </project>

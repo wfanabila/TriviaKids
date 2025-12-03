@@ -1,10 +1,10 @@
-package com.example.triviakids
+package com.example.quizapp.triviakids
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.navigation.compose.rememberNavController
-import com.example.triviakids.ui.theme.TriviaKidsTheme
+import com.example.quizapp.triviakids.ui.theme.TriviaKidsTheme
 
 class ProfileActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
