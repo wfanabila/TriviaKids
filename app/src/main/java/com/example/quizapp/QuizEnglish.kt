@@ -1,37 +1,57 @@
 package com.example.quizapp
 
+import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.media.MediaPlayer
 import android.os.Bundle
-import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.quizapp.databinding.ActivityMainBinding
-
+import com.example.quizapp.databinding.QuizEnglish1Binding
 
 class QuizEnglish : AppCompatActivity() {
-    private lateinit var binding: ActivityMainBinding
+    private lateinit var binding: QuizEnglish1Binding
 
     private val questions = arrayOf("Hello! I am a _______",
         "Guess my occupation!",
-        "What job do you think I am?")
+        "What job do you think I am?",)
 
     private val options = arrayOf(arrayOf("Gardener", "Postman", "Fireman", "Policeman"),
         arrayOf("Policeman", "Fireman", "Doctor", "Gardener"),
         arrayOf("Gardener", "Doctor", "Policeman", "Postman"))
 
-    private val photos = arrayOf(R.drawable.fireman, R.drawable.policeman, R.drawable.doctor,)
+    private val photos = arrayOf(R.drawable.fireman, R.drawable.policeman, R.drawable.doctor)
     private val correctAnswers = arrayOf(2, 0, 1)
 
     private var currentQuestionIndex = 0
     private var score = 0
 
+    private var mediaPlayer: MediaPlayer? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = QuizEnglish1Binding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        totalQuestion()
+
+        mediaPlayer = MediaPlayer.create(this, R.raw.sound)
+        mediaPlayer?.isLooping = true
+
+        binding.soundonButton.setOnClickListener {
+            if (mediaPlayer?.isPlaying == true) {
+                mediaPlayer?.pause()
+            } else {
+                mediaPlayer?.start()
+            }
+        }
+
         displayQuestion()
+
+        binding.closeButton.setOnClickListener {
+            mediaPlayer?.stop()
+            finish()
+        }
 
         binding.option1Button.setOnClickListener {
             checkAnswer(0)
@@ -46,6 +66,13 @@ class QuizEnglish : AppCompatActivity() {
             checkAnswer(3)
         }
     }
+
+    private fun totalQuestion() {
+        val currentNumber = currentQuestionIndex + 1
+        val totalNumber = questions.size
+        binding.totalQuestion.text = "$currentNumber / $totalNumber"
+    }
+
 
     private fun correctButtonColors(buttonIndex: Int) {
         val greenTint = ColorStateList.valueOf(Color.parseColor("#61E547"))
@@ -81,6 +108,8 @@ class QuizEnglish : AppCompatActivity() {
     }
 
     private fun displayQuestion() {
+        totalQuestion()
+
         binding.questionText.text = questions[currentQuestionIndex]
         binding.option1Button.text = options[currentQuestionIndex][0]
         binding.option2Button.text = options[currentQuestionIndex][1]
@@ -112,7 +141,10 @@ class QuizEnglish : AppCompatActivity() {
                 displayQuestion()
             }, 1000)
         } else {
-            showResults()
+            val intent = Intent(this, QuizEnglishSB::class.java)
+            intent.putExtra("CURRENT_SCORE", score)
+            startActivity(intent)
+            finish()
         }
     }
 
