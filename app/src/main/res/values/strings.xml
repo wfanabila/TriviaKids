@@ -7,6 +7,8 @@
     <string name="currPass_label">Current Password :</string>
     <string name="newPass_label">New Password : :</string>
 
+    <string name="current_password_label">Current Password Label</string>
+    <string name="new_password_label">New Password Label</string>
 
 
     <string name="save_change">Save Change</string>

@@ -45,6 +45,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="250dp"
             android:autofillHints="username"
+            android:inputType="text"
             android:background="@drawable/edit_text_rounded_corner" />
 
         <TextView
@@ -76,7 +77,8 @@
             android:paddingStart="23dp"
             android:paddingEnd="5dp"
             android:text="@string/currPass_label"
-            android:labelFor="@id/curr_pass"/>
+            android:labelFor="@id/curr_pass"
+            android:contentDescription="@string/current_password_label"/>
 
         <EditText
             android:id="@+id/curr_pass"
@@ -97,7 +99,8 @@
             android:paddingStart="23dp"
             android:paddingEnd="16dp"
             android:text="@string/newPass_label"
-            android:labelFor="@id/new_pass"/>
+            android:labelFor="@id/new_pass"
+            android:contentDescription="@string/new_password_label"/>
 
         <EditText
             android:id="@+id/new_pass"

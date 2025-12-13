@@ -9,7 +9,7 @@
     <color name="lightPurple">#AEB8FE</color>
     <color name="red">#FF4A4C</color>
     <color name="buttonPurple">#8D95FF</color>
-    <color name="textpurple">#C2C9FF</color>
-    <color name="yellowcorner">#FFF496</color>
+    <color name="textPurple">#C2C9FF</color>
+    <color name="yellowCorner">#FFF496</color>
 
 </resources>
