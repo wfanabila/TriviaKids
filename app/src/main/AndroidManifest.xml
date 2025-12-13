@@ -11,28 +11,35 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.QuizApp">
-
         <activity
             android:name=".MainActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:exported="false"
+            android:theme="@style/Theme.QuizApp" />
 
         <activity
             android:name=".QuizEnglish"
-            android:exported="false" />
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
+<!--        <activity-->
+<!--            android:name=".QuizEnglishFC"-->
+<!--            android:exported="false">-->
+<!--            <action android:name="android.intent.action.MAIN"/>-->
+<!--            <category android:name="android.intent.category.LAUNCHER"/>-->
+<!--        </activity>-->
 
         <activity
-            android:name=".QuizScience"
-            android:exported="false" />
-
-        <activity
-            android:name=".QuizMathematics"
-            android:exported="false" />
-
+            android:name=".QuizEnglishSB"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
