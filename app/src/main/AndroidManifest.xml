@@ -11,6 +11,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.QuizApp">
+
         <activity
             android:name=".MainActivity"
             android:exported="false"
@@ -25,13 +26,6 @@
             </intent-filter>
         </activity>
 
-<!--        <activity-->
-<!--            android:name=".QuizEnglishFC"-->
-<!--            android:exported="false">-->
-<!--            <action android:name="android.intent.action.MAIN"/>-->
-<!--            <category android:name="android.intent.category.LAUNCHER"/>-->
-<!--        </activity>-->
-
         <activity
             android:name=".QuizEnglishSB"
             android:exported="true">
@@ -40,6 +34,10 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-    </application>
 
+        <activity
+            android:name=".QuizScienceSB"
+            android:exported="false" />
+
+    </application>
 </manifest>
