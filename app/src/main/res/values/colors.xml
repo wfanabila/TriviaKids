@@ -11,5 +11,6 @@
     <color name="buttonPurple">#8D95FF</color>
     <color name="textPurple">#C2C9FF</color>
     <color name="yellowCorner">#FFF496</color>
+    <color name="greenCorner">#61E547</color>
 
 </resources>

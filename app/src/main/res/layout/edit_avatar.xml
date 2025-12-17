@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/edit_profile"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context=".MainActivity">
+
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="347dp"
+        android:layout_height="614dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="90dp"
+        app:cardBackgroundColor="@color/yellowCorner"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="15dp">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/pfp_ava"
+            android:contentDescription="@string/profile_picture" />
+
+        <GridLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="60dp"
+            android:columnCount="3"
+            android:rowCount="3"
+            android:useDefaultMargins="true">
+
+            <ImageButton
+                android:id="@+id/image_button_avatar1"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:background="@null"
+                android:contentDescription="@string/avatar_1"
+                android:scaleType="fitCenter"
+                android:src="@drawable/avatar_1" />
+
+            <ImageButton
+                android:id="@+id/image_button_avatar2"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:background="@null"
+                android:contentDescription="@string/avatar_2"
+                android:scaleType="fitCenter"
+                android:src="@drawable/avatar_2" />
+
+            <ImageButton
+                android:id="@+id/image_button_avatar3"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:background="@null"
+                android:contentDescription="@string/avatar_3"
+                android:scaleType="fitCenter"
+                android:src="@drawable/avatar_3" />
+
+            <ImageButton
+                android:id="@+id/image_button_avatar4"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:background="@null"
+                android:contentDescription="@string/avatar_4"
+                android:scaleType="fitCenter"
+                android:src="@drawable/avatar_4" />
+
+            <ImageButton
+                android:id="@+id/image_button_pfp"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:background="@null"
+                android:contentDescription="@string/pfp_ava"
+                android:scaleType="fitCenter"
+                android:src="@drawable/pfp_ava" />
+
+            <ImageButton
+                android:id="@+id/image_button_avatar6"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:background="@null"
+                android:contentDescription="@string/avatar_6"
+                android:scaleType="fitCenter"
+                android:src="@drawable/avatar_6" />
+
+            <ImageButton
+                android:id="@+id/image_button_avatar7"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:background="@null"
+                android:contentDescription="@string/avatar_7"
+                android:scaleType="fitCenter"
+                android:src="@drawable/avatar_7" />
+
+            <ImageButton
+                android:id="@+id/image_button_avatar8"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:background="@null"
+                android:contentDescription="@string/avatar_8"
+                android:scaleType="fitCenter"
+                android:src="@drawable/avatar_8" />
+
+            <ImageButton
+                android:id="@+id/image_button_avatar5"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:background="@null"
+                android:contentDescription="@string/avatar_5"
+                android:scaleType="fitCenter"
+                android:src="@drawable/avatar_5" />
+
+        </GridLayout>
+
+
+        <Button
+            android:id="@+id/save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="550dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/buttonPurple"
+            android:elevation="10dp"
+            android:outlineProvider="background"
+            android:stateListAnimator="@null"
+            android:text="@string/done"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            app:cornerRadius="10dp"
+            app:strokeColor="@color/white"
+            app:strokeWidth="2dp" />
+
+
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>

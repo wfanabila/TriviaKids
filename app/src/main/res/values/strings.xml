@@ -2,6 +2,7 @@
     <string name="app_name">Quiz App</string>
 
     <string name="profile_picture">Profile Picture</string>
+    <string name="edit_avatar">Edit Avatar</string>
     <string name="username_label">Username :</string>
     <string name="email_label">Email :</string>
     <string name="currPass_label">Current Password :</string>
@@ -10,10 +11,19 @@
     <string name="current_password_label">Current Password Label</string>
     <string name="new_password_label">New Password Label</string>
 
-
     <string name="save_change">Save Change</string>
-    <string name="save">Save Change</string>
 
+    <string name="avatar_1">avatar 1</string>
+    <string name="avatar_2">avatar 2</string>
+    <string name="avatar_3">avatar 3</string>
+    <string name="avatar_4">avatar 4</string>
+    <string name="pfp_ava">pfp ava</string>
+    <string name="avatar_5">avatar 5</string>
+    <string name="avatar_6">avatar 6</string>
+    <string name="avatar_7">avatar 7</string>
+    <string name="avatar_8">avatar 8</string>
+    <string name="avatar_9">avatar 9</string>
+    <string name="done">Done</string>
 
 
 
