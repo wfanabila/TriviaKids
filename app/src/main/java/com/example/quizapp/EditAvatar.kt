@@ -1,5 +1,6 @@
 package com.example.quizapp
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -26,7 +27,6 @@ class EditAvatar : AppCompatActivity() {
     }
 
     private fun loadCurrentAvatar() {
-
     }
 
     private fun setAvatarSelectionListeners() {
@@ -43,7 +43,6 @@ class EditAvatar : AppCompatActivity() {
 
     private fun selectAvatar(avatarResId: Int) {
         selectedAvatar = avatarResId
-        // update pfp w selected avatar ~~
         binding.imageView.setImageResource(avatarResId)
         Toast.makeText(this, "Avatar selected", Toast.LENGTH_SHORT).show()
     }
@@ -54,6 +53,10 @@ class EditAvatar : AppCompatActivity() {
             return
         }
 
-        Toast.makeText(this, "Avatar updated successfully!", Toast.LENGTH_SHORT).show()
+        // back to EditProfile page ~~
+        val resultIntent = Intent()
+        resultIntent.putExtra("selectedAvatar", selectedAvatar)
+        setResult(RESULT_OK, resultIntent)
+        finish()
     }
 }

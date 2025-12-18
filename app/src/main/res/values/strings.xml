@@ -25,6 +25,11 @@
     <string name="avatar_9">avatar 9</string>
     <string name="done">Done</string>
 
+    <string name="home">nav bar home</string>
+    <string name="profile">nav bar home</string>
+    <string name="score">nav bar score</string>
+    <string name="select">nav bar select</string>
+
 
 
 </resources>
