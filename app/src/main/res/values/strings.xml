@@ -36,5 +36,8 @@
     <string name="logout">Log Out</string>
     <string name="next">next button</string>
 
+    <string name="next_game">Next</string> // after game score page
+    <string name="play_again">Play Again?</string> // after game score page
+
 
 </resources>
