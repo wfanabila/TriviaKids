@@ -1,12 +1,15 @@
 package com.example.quizapp
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.quizapp.databinding.ActivityProfileBinding
 
 class ProfileActivity : AppCompatActivity() {
+
     private lateinit var binding: ActivityProfileBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -14,27 +17,50 @@ class ProfileActivity : AppCompatActivity() {
         binding = ActivityProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Example user data
-        val userName = "Leehan"
-        val userEmail = "leehan04@gmail.com"
-        val totalScore = 90
-        val englishScore = 20
-        val mathScore = 15
-        val scienceScore = 25
+        binding.userName.text = getString(R.string.username)
+        binding.userEmail.text = getString(R.string.user_email)
 
-        // Setting user data into the UI
-        binding.profileName.text = userName
-        binding.profileEmail.text = userEmail
-        binding.totalScore.text = "Total Score: $totalScore/100"
-        binding.englishScore.text = "English: $englishScore"
-        binding.mathScore.text = "Math: $mathScore"
-        binding.scienceScore.text = "Science: $scienceScore"
+        // navigate to edit profile page  ~~
+        binding.setting.setOnClickListener {
+            navigateToEditProfile()
+        }
 
-        // Button to Edit Profile
-        binding.editProfileButton.setOnClickListener {
-            // You can navigate to another activity (for editing the profile)
-            // For now, just show a message or navigate to the EditProfileActivity
-            // startActivity(Intent(this, EditProfileActivity::class.java))
+        binding.scoreIcon.setOnClickListener {
+        }
+
+        binding.homeIcon.setOnClickListener {
+            // navigate to home screen page ( yang pilih subject )
+        }
+
+        binding.profileIcon.setOnClickListener {
         }
     }
+
+    private fun navigateToEditProfile() {
+        val intent = Intent(this, EditProfile::class.java)
+        startActivityForResult(intent, 100)
+    }
+
+    // data from EditProfile
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 100 && resultCode == RESULT_OK) {
+            val newUsername = data?.getStringExtra("newUsername")
+            val newEmail = data?.getStringExtra("newEmail")
+            val selectedAvatar = data?.getIntExtra("selectedAvatar", -1)
+
+            if (newUsername != null) {
+                binding.userName.text = newUsername
+            }
+
+            if (newEmail != null) {
+                binding.userEmail.text = newEmail
+            }
+
+            if (selectedAvatar != null && selectedAvatar != -1) {
+                binding.imageView.setImageResource(selectedAvatar)
+            }
+        }
+    }
+
 }

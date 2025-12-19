@@ -9,10 +9,10 @@ import com.example.quizapp.databinding.EditProfileBinding
 class EditProfile : AppCompatActivity() {
 
     private lateinit var binding: EditProfileBinding
+    private var selectedAvatar: Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = EditProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -39,29 +39,33 @@ class EditProfile : AppCompatActivity() {
     private fun saveProfileChanges() {
         val newUsername = binding.username.text.toString().trim()
         val newEmail = binding.email.text.toString().trim()
-        val currentPassword = binding.currPass.text.toString().trim()
-        val newPassword = binding.newPass.text.toString().trim()
 
-        if (newUsername.isEmpty() || newEmail.isEmpty() || currentPassword.isEmpty()) {
-            Toast.makeText(this, "Username, Email, and Current Password are required.", Toast.LENGTH_SHORT).show()
+        if (newUsername.isEmpty() || newEmail.isEmpty()) {
+            Toast.makeText(this, "Username and Email are required.", Toast.LENGTH_SHORT).show()
             return
         }
 
-        if (newPassword.isNotEmpty() && newPassword.length < 6) {
-            Toast.makeText(this, "New Password must be at least 6 characters long.", Toast.LENGTH_SHORT).show()
-            return
+        // updated data back to profile page ~~
+        val resultIntent = Intent()
+        resultIntent.putExtra("newUsername", newUsername)
+        resultIntent.putExtra("newEmail", newEmail)
+
+        // pass changed avatar ~~
+        selectedAvatar?.let {
+            resultIntent.putExtra("selectedAvatar", it)
         }
 
-        Toast.makeText(this, "Profile updated successfully!", Toast.LENGTH_SHORT).show()
+        setResult(RESULT_OK, resultIntent)
+        finish()
     }
 
-    // update dari EditAvatar activity ~~
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 1 && resultCode == RESULT_OK) {
-            val selectedAvatar = data?.getIntExtra("selectedAvatar", -1)
-            if (selectedAvatar != null && selectedAvatar != -1) {
-                binding.imageView.setImageResource(selectedAvatar)  // Update the profile picture
+            val avatarResId = data?.getIntExtra("selectedAvatar", -1)
+            if (avatarResId != null && avatarResId != -1) {
+                selectedAvatar = avatarResId
+                binding.imageView.setImageResource(avatarResId)
                 Toast.makeText(this, "Avatar updated!", Toast.LENGTH_SHORT).show()
             }
         }

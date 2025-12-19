@@ -30,6 +30,11 @@
     <string name="score">nav bar score</string>
     <string name="select">nav bar select</string>
 
+    <string name="username">Leehan</string>
+    <string name="user_email">leehan04@gmail.com</string>
+    <string name="setting">Setting</string>
+    <string name="logout">Log Out</string>
+    <string name="next">next button</string>
 
 
 </resources>

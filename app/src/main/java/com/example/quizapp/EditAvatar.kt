@@ -17,16 +17,11 @@ class EditAvatar : AppCompatActivity() {
         binding = EditAvatarBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        loadCurrentAvatar()
-
         setAvatarSelectionListeners()
 
         binding.save.setOnClickListener {
             saveAvatarChanges()
         }
-    }
-
-    private fun loadCurrentAvatar() {
     }
 
     private fun setAvatarSelectionListeners() {
@@ -53,7 +48,6 @@ class EditAvatar : AppCompatActivity() {
             return
         }
 
-        // back to EditProfile page ~~
         val resultIntent = Intent()
         resultIntent.putExtra("selectedAvatar", selectedAvatar)
         setResult(RESULT_OK, resultIntent)

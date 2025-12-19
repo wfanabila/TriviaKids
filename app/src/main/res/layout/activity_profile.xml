@@ -1,7 +1,570 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:orientation="vertical"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent">
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/edit_profile"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@drawable/background"
+    tools:context=".ProfileActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="30dp"
+        android:gravity="start|center_vertical">
+
+        <ImageView
+            android:id="@+id/closeButton"
+            android:layout_width="21dp"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/ic_menu_close_clear_cancel"
+            app:tint="#424242" />
+
+        <TextView
+            android:id="@+id/editProfileLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="118dp"
+            android:text="    PROFILE   "
+            android:textSize="15sp"
+            android:textColor="#000000"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/edit_profile_label_bg"
+            android:padding="8dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_marginTop="40dp">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="170dp"
+            android:layout_height="170dp"
+            android:layout_gravity="center"
+            android:scaleType="centerCrop"
+            android:background="@drawable/pfp_ava"
+            android:contentDescription="@string/profile_picture"
+            android:layout_marginTop="20dp" />
+
+        <TextView
+            android:id="@+id/user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Leehan"
+            android:textSize="18sp"
+            android:textColor="#000000"
+            android:textStyle="bold"
+            android:layout_marginTop="10dp" />
+
+        <TextView
+            android:id="@+id/user_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="leehan04@gmail.com"
+            android:textSize="16sp"
+            android:textColor="#000000"
+            android:layout_marginTop="2dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="190dp"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="30dp">
+
+        <!-- eng score -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/eng_total_score"
+            android:layout_width="114dp"
+            android:layout_height="160dp"
+            android:layout_marginEnd="10dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="15dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="TOTAL SCORE"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    android:textColor="#000000" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="20"
+                    android:textSize="30sp"
+                    android:textColor="#FFC60B"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="5dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="BEST SCORE"
+                        android:textSize="8sp"
+                        android:textColor="#000000" />
+
+                    <Space
+                        android:layout_width="16dp"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/best_score_eng"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=": 10"
+                        android:textSize="8sp"
+                        android:textColor="#000000" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="2dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="FASTEST TIME"
+                        android:textSize="8sp"
+                        android:textColor="#000000" />
+
+                    <Space
+                        android:layout_width="8dp"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/fastest_time_eng"
+                        android:layout_width="30dp"
+                        android:layout_height="wrap_content"
+                        android:text=": 04:07"
+                        android:textSize="7sp"
+                        android:textColor="#000000" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#A6C4E5"
+                    android:layout_marginTop="8dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="ENGLISH\n  SCORE"
+                    android:textColor="#A6C4E5"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <!-- math score -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/math_total_score"
+            android:layout_width="114dp"
+            android:layout_height="160dp"
+            android:layout_marginEnd="10dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="15dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="TOTAL SCORE"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    android:textColor="#000000" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="20"
+                    android:textSize="30sp"
+                    android:textColor="#FFC60B"
+                    android:textStyle="bold" />
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="5dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="BEST SCORE"
+                        android:textSize="8sp"
+                        android:textColor="#000000" />
+
+                    <Space
+                        android:layout_width="16dp"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/best_score_meth"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=": 10"
+                        android:textSize="8sp"
+                        android:textColor="#000000" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="2dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="FASTEST TIME"
+                        android:textSize="8sp"
+                        android:textColor="#000000" />
+
+                    <Space
+                        android:layout_width="8dp"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/fastest_time_math"
+                        android:layout_width="30dp"
+                        android:layout_height="wrap_content"
+                        android:text=": 04:07"
+                        android:textSize="7sp"
+                        android:textColor="#000000" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#A6C4E5"
+                    android:layout_marginTop="8dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="MATHEMATICS\n        SCORE"
+                    android:textColor="#A6C4E5"
+                    android:textSize="11sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <!-- scn score -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/scn_total_score"
+            android:layout_width="114dp"
+            android:layout_height="160dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="15dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="TOTAL SCORE"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    android:textColor="#000000" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="20"
+                    android:textSize="30sp"
+                    android:textColor="#FFC60B"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="5dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="BEST SCORE"
+                        android:textSize="8sp"
+                        android:textColor="#000000" />
+
+                    <Space
+                        android:layout_width="16dp"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/best_score_scn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=": 10"
+                        android:textSize="8sp"
+                        android:textColor="#000000" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="2dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="FASTEST TIME"
+                        android:textSize="8sp"
+                        android:textColor="#000000" />
+
+                    <Space
+                        android:layout_width="8dp"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/fastest_time_scn"
+                        android:layout_width="30dp"
+                        android:layout_height="wrap_content"
+                        android:text=": 04:07"
+                        android:textSize="7sp"
+                        android:textColor="#000000" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#A6C4E5"
+                    android:layout_marginTop="8dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="SCIENCE\n  SCORE"
+                    android:textColor="#A6C4E5"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+    </LinearLayout>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="357dp"
+        android:layout_height="270dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="15dp"
+        app:cardBackgroundColor="@android:color/white"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="15dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_marginTop="30dp">
+
+            <!-- button setting -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                app:cardCornerRadius="15dp"
+                app:cardElevation="5dp"
+                android:padding="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="start|center_vertical">
+
+                    <ImageButton
+                        android:id="@+id/setting_icon"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_marginStart="35dp"
+                        android:background="@null"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/setting_icon"
+                        android:contentDescription="@string/setting"/>
+
+                    <Button
+                        android:id="@+id/setting"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="1dp"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:text="Setting"
+                        android:textColor="#000000"
+                        android:textSize="16sp" />
+
+                    <ImageButton
+                        android:id="@+id/next_icon1"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_marginStart="115dp"
+                        android:background="@null"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/next_icon"
+                        android:contentDescription="@string/next"/>
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- button logout -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="15dp"
+                app:cardElevation="5dp"
+                android:padding="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="start|center_vertical">
+
+                    <ImageButton
+                        android:id="@+id/logout_icon"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_marginStart="34dp"
+                        android:background="@null"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/logout_icon"
+                        android:contentDescription="@string/logout"/>
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Log Out"
+                        android:textSize="16sp"
+                        android:layout_marginStart="1dp"
+                        android:textColor="#000000"
+                        android:background="?android:attr/selectableItemBackground" />
+
+                    <ImageButton
+                        android:id="@+id/next_icon2"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_marginStart="111dp"
+                        android:background="@null"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/next_icon"
+                        android:contentDescription="@string/next" />
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="75dp"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:background="@drawable/nav_bar_corner"
+            android:layout_marginTop="55dp"
+            android:layout_gravity="bottom">
+
+            <ImageButton
+                android:id="@+id/score_icon"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@null"
+                android:contentDescription="@string/score"
+                android:scaleType="fitCenter"
+                android:layout_marginEnd="50dp"
+                android:src="@drawable/score_icon" />
+
+            <ImageButton
+                android:id="@+id/home_icon"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@null"
+                android:contentDescription="@string/home"
+                android:scaleType="fitCenter"
+                android:layout_marginEnd="50dp"
+                android:src="@drawable/home_icon" />
+
+            <ImageButton
+                android:id="@+id/profile_icon"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@null"
+                android:contentDescription="@string/profile"
+                android:scaleType="fitCenter"
+                android:src="@drawable/profile_icon" />
+
+        </LinearLayout>
+
+
+    </androidx.cardview.widget.CardView>
+
 
 </LinearLayout>
