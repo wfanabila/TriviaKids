@@ -3,6 +3,7 @@ package com.example.quizapp
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.example.quizapp.databinding.EditProfileBinding
 
@@ -11,29 +12,51 @@ class EditProfile : AppCompatActivity() {
     private lateinit var binding: EditProfileBinding
     private var selectedAvatar: Int? = null
 
+    private val editAvatarLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == RESULT_OK) {
+                val avatarResId = result.data?.getIntExtra("selectedAvatar", -1) ?: -1
+                if (avatarResId != -1) {
+                    selectedAvatar = avatarResId
+                    binding.imageView.setImageResource(avatarResId)
+
+                    // update to the latest avatar everytime
+                    ProfilePrefs.saveAvatar(this, avatarResId)
+                }
+            }
+        }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = EditProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        loadCurrentProfileData()
+        loadCurrentProfileData() // load current profile data from SharedPreferences ~~
 
         binding.buttonEditAvatar.setOnClickListener {
             val intent = Intent(this, EditAvatar::class.java)
-            startActivityForResult(intent, 1)
+            editAvatarLauncher.launch(intent)
         }
 
         binding.save.setOnClickListener {
             saveProfileChanges()
         }
+
+        binding.scoreIcon.setOnClickListener {
+            startActivity(Intent(this, ScoreAfterGame::class.java))
+        }
+
+        binding.homeIcon.setOnClickListener {
+
+        }
     }
 
     private fun loadCurrentProfileData() {
-        val currentUsername = "leehan"
-        val currentEmail = "leehan404@gmail.com"
-
-        binding.username.setText(currentUsername)
-        binding.email.setText(currentEmail)
+        binding.username.setText(ProfilePrefs.getName(this))
+        binding.email.setText(ProfilePrefs.getEmail(this))
+        val avatar = ProfilePrefs.getAvatar(this)
+        binding.imageView.setImageResource(avatar)
+        selectedAvatar = avatar
     }
 
     private fun saveProfileChanges() {
@@ -41,33 +64,21 @@ class EditProfile : AppCompatActivity() {
         val newEmail = binding.email.text.toString().trim()
 
         if (newUsername.isEmpty() || newEmail.isEmpty()) {
-            Toast.makeText(this, "Username and Email are required.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Username and Email are required", Toast.LENGTH_SHORT).show()
             return
         }
 
-        // updated data back to profile page ~~
-        val resultIntent = Intent()
-        resultIntent.putExtra("newUsername", newUsername)
-        resultIntent.putExtra("newEmail", newEmail)
+        ProfilePrefs.saveName(this, newUsername)
+        ProfilePrefs.saveEmail(this, newEmail)
+        selectedAvatar?.let { ProfilePrefs.saveAvatar(this, it) }
 
-        // pass changed avatar ~~
-        selectedAvatar?.let {
-            resultIntent.putExtra("selectedAvatar", it)
+        val resultIntent = Intent().apply {
+            putExtra("newUsername", newUsername)
+            putExtra("newEmail", newEmail)
+            selectedAvatar?.let { putExtra("selectedAvatar", it) }
         }
 
         setResult(RESULT_OK, resultIntent)
         finish()
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == 1 && resultCode == RESULT_OK) {
-            val avatarResId = data?.getIntExtra("selectedAvatar", -1)
-            if (avatarResId != null && avatarResId != -1) {
-                selectedAvatar = avatarResId
-                binding.imageView.setImageResource(avatarResId)
-                Toast.makeText(this, "Avatar updated!", Toast.LENGTH_SHORT).show()
-            }
-        }
     }
 }

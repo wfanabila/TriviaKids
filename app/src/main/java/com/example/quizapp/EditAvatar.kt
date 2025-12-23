@@ -13,14 +13,24 @@ class EditAvatar : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = EditAvatarBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // show current avatar ~~
+        val currentAvatar = ProfilePrefs.getAvatar(this)
+        binding.imageView.setImageResource(currentAvatar)
+        selectedAvatar = currentAvatar
+
         setAvatarSelectionListeners()
 
-        binding.save.setOnClickListener {
-            saveAvatarChanges()
+        binding.save.setOnClickListener { saveAvatarChanges() }
+
+        binding.scoreIcon.setOnClickListener {
+            startActivity(Intent(this, ScoreAfterGame::class.java))
+        }
+
+        binding.homeIcon.setOnClickListener {
+
         }
     }
 
@@ -48,6 +58,7 @@ class EditAvatar : AppCompatActivity() {
             return
         }
 
+        // back to EditProfile page ~~
         val resultIntent = Intent()
         resultIntent.putExtra("selectedAvatar", selectedAvatar)
         setResult(RESULT_OK, resultIntent)

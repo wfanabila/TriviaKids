@@ -92,7 +92,7 @@
             android:gravity="center"
             android:orientation="vertical"
             app:cardCornerRadius="20dp"
-            app:cardElevation="15dp">
+            app:cardElevation="8dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -200,7 +200,7 @@
             android:gravity="center"
             android:orientation="vertical"
             app:cardCornerRadius="20dp"
-            app:cardElevation="15dp">
+            app:cardElevation="8dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -308,7 +308,7 @@
             android:gravity="center"
             android:orientation="vertical"
             app:cardCornerRadius="20dp"
-            app:cardElevation="15dp">
+            app:cardElevation="8dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -416,7 +416,7 @@
         android:layout_marginTop="15dp"
         app:cardBackgroundColor="@android:color/white"
         app:cardCornerRadius="20dp"
-        app:cardElevation="15dp">
+        app:cardElevation="8dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -428,11 +428,7 @@
             <!-- button setting -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                app:cardCornerRadius="15dp"
-                app:cardElevation="5dp"
-                android:padding="10dp">
+                android:layout_height="wrap_content">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -476,10 +472,7 @@
             <!-- button logout -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:cardCornerRadius="15dp"
-                app:cardElevation="5dp"
-                android:padding="10dp">
+                android:layout_height="wrap_content">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -491,7 +484,7 @@
                         android:id="@+id/logout_icon"
                         android:layout_width="48dp"
                         android:layout_height="48dp"
-                        android:layout_marginStart="34dp"
+                        android:layout_marginStart="35dp"
                         android:background="@null"
                         android:scaleType="fitCenter"
                         android:src="@drawable/logout_icon"
