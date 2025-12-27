@@ -39,5 +39,21 @@
     <string name="next_game">Next</string> // after game score page
     <string name="play_again">Play Again?</string> // after game score page
 
+    <string name="total_score_title">TOTAL SCORE</string>
+    <string name="best_score_value">: %1$s</string>
+    <string name="fastest_time_value">: %1$s</string>
+    <string name="subject_score_label">%1$s\nSCORE</string>
+
+    <string name="eng_label">ENGLISH\nSCORE</string>
+    <string name="math_label">MATHEMATICS\nSCORE</string>
+    <string name="scn_label">SCIENCE\n  SCORE</string>
+
+    <string name="best_score_label">BEST SCORE</string>
+    <string name="fastest_time_label">FASTEST TIME</string>
+
+
+    // page label
+    <string name="profile_page"> PROFILE </string>
+    <string name="edit_profile_page"> EDIT PROFILE </string>
 
 </resources>

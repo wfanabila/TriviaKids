@@ -13,4 +13,10 @@
     <color name="yellowCorner">#FFF496</color>
     <color name="greenCorner">#61E547</color>
 
+    <color name="black33">#33000000</color>
+    <color name="lineBlue">#66A6C4E5</color>
+    <color name="blueSubject">#A6C4E5</color>
+
+
+
 </resources>

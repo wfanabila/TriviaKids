@@ -24,5 +24,9 @@ class ScoreAfterGame : AppCompatActivity() {
             val intent = Intent(this, ScoreAfterGame::class.java)
             startActivity(intent)
         }
+
+        binding.closeButton.setOnClickListener {
+            finish()
+        }
     }
 }

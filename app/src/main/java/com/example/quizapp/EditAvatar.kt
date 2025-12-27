@@ -3,6 +3,7 @@ package com.example.quizapp
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.quizapp.databinding.EditAvatarBinding
 
@@ -32,6 +33,16 @@ class EditAvatar : AppCompatActivity() {
         binding.homeIcon.setOnClickListener {
 
         }
+
+        binding.closeButton.setOnClickListener {
+            showDiscardDialog()
+        }
+
+        binding.profileIcon.setOnClickListener {
+            val intent = Intent(this, ProfileActivity::class.java)
+            startActivity(intent)
+        }
+
     }
 
     private fun setAvatarSelectionListeners() {
@@ -63,5 +74,19 @@ class EditAvatar : AppCompatActivity() {
         resultIntent.putExtra("selectedAvatar", selectedAvatar)
         setResult(RESULT_OK, resultIntent)
         finish()
+    }
+
+    private fun showDiscardDialog() {
+        AlertDialog.Builder(this)
+            .setTitle("Discard changes?")
+            .setMessage("Your changes will not be saved.")
+            .setPositiveButton("Discard") { dialog, _ ->
+                dialog.dismiss()
+                finish()
+            }
+            .setNegativeButton("Cancel") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
     }
 }

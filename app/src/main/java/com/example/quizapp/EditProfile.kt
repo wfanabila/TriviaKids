@@ -6,6 +6,8 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.example.quizapp.databinding.EditProfileBinding
+import androidx.appcompat.app.AlertDialog // alert dialog ~~
+
 
 class EditProfile : AppCompatActivity() {
 
@@ -49,6 +51,16 @@ class EditProfile : AppCompatActivity() {
         binding.homeIcon.setOnClickListener {
 
         }
+
+        binding.profileIcon.setOnClickListener {
+            val intent = Intent(this, ProfileActivity::class.java)
+            startActivity(intent)
+        }
+
+        binding.closeButton.setOnClickListener {
+            showDiscardDialog()
+        }
+
     }
 
     private fun loadCurrentProfileData() {
@@ -81,4 +93,21 @@ class EditProfile : AppCompatActivity() {
         setResult(RESULT_OK, resultIntent)
         finish()
     }
+
+    // alert dialog to confirm whether the user wants to discard changes ~~
+    private fun showDiscardDialog() {
+        AlertDialog.Builder(this)
+            .setTitle("Discard changes?")
+            .setMessage("Your changes will not be saved.")
+            .setPositiveButton("Discard") { dialog, _ ->
+                dialog.dismiss()
+                finish()
+            }
+            .setNegativeButton("Cancel") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
+    }
+
+
 }

@@ -10,33 +10,39 @@
     android:background="@drawable/background"
     tools:context=".ProfileActivity">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="30dp"
-        android:gravity="start|center_vertical">
+        android:layout_marginTop="30dp">
 
         <ImageView
             android:id="@+id/closeButton"
             android:layout_width="21dp"
-            android:layout_height="wrap_content"
+            android:layout_height="21dp"
             android:src="@android:drawable/ic_menu_close_clear_cancel"
-            app:tint="#424242" />
+            app:tint="#424242"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
 
         <TextView
             android:id="@+id/editProfileLabel"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="118dp"
-            android:text="    PROFILE   "
+            android:text="@string/profile_page"
             android:textSize="15sp"
             android:textColor="#000000"
-            android:layout_gravity="center_vertical"
             android:background="@drawable/edit_profile_label_bg"
-            android:padding="8dp" />
+            android:padding="8dp"
+            android:gravity="center"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -59,7 +65,7 @@
             android:id="@+id/user_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Leehan"
+            android:text="@string/username"
             android:textSize="18sp"
             android:textColor="#000000"
             android:textStyle="bold"
@@ -69,7 +75,7 @@
             android:id="@+id/user_email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="leehan04@gmail.com"
+            android:text="@string/user_email"
             android:textSize="16sp"
             android:textColor="#000000"
             android:layout_marginTop="2dp" />
@@ -78,16 +84,16 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="190dp"
+        android:layout_height="160dp"
         android:orientation="horizontal"
         android:gravity="center"
-        android:layout_marginTop="30dp">
+        android:layout_marginTop="20dp">
 
         <!-- eng score -->
         <androidx.cardview.widget.CardView
             android:id="@+id/eng_total_score"
             android:layout_width="114dp"
-            android:layout_height="160dp"
+            android:layout_height="137dp"
             android:layout_marginEnd="10dp"
             android:gravity="center"
             android:orientation="vertical"
@@ -97,93 +103,42 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
                 android:gravity="center"
+                android:orientation="vertical"
                 android:padding="16dp">
 
                 <TextView
+                    android:id="@+id/eng_total_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="TOTAL SCORE"
-                    android:textSize="10sp"
-                    android:textStyle="bold"
-                    android:textColor="#000000" />
+                    android:text="@string/total_score_title"
+                    android:textColor="#000000"
+                    android:textSize="11sp"
+                    android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/eng_total_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="20"
-                    android:textSize="30sp"
                     android:textColor="#FFC60B"
+                    android:textSize="35sp"
                     android:textStyle="bold" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:layout_marginTop="5dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="BEST SCORE"
-                        android:textSize="8sp"
-                        android:textColor="#000000" />
-
-                    <Space
-                        android:layout_width="16dp"
-                        android:layout_height="wrap_content" />
-
-                    <TextView
-                        android:id="@+id/best_score_eng"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text=": 10"
-                        android:textSize="8sp"
-                        android:textColor="#000000" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:layout_marginTop="2dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="FASTEST TIME"
-                        android:textSize="8sp"
-                        android:textColor="#000000" />
-
-                    <Space
-                        android:layout_width="8dp"
-                        android:layout_height="wrap_content" />
-
-                    <TextView
-                        android:id="@+id/fastest_time_eng"
-                        android:layout_width="30dp"
-                        android:layout_height="wrap_content"
-                        android:text=": 04:07"
-                        android:textSize="7sp"
-                        android:textColor="#000000" />
-                </LinearLayout>
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="#A6C4E5"
-                    android:layout_marginTop="8dp"/>
+                    android:layout_marginTop="5dp"
+                    android:background="@color/lineBlue" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="ENGLISH\n  SCORE"
-                    android:textColor="#A6C4E5"
+                    android:layout_marginTop="7dp"
+                    android:gravity="center"
+                    android:text="@string/eng_label"
+                    android:textAlignment="center"
+                    android:textColor="@color/blueSubject"
                     android:textSize="12sp"
                     android:textStyle="bold" />
 
@@ -195,106 +150,55 @@
         <androidx.cardview.widget.CardView
             android:id="@+id/math_total_score"
             android:layout_width="114dp"
-            android:layout_height="160dp"
+            android:layout_height="137dp"
             android:layout_marginEnd="10dp"
             android:gravity="center"
             android:orientation="vertical"
             app:cardCornerRadius="20dp"
-            app:cardElevation="8dp">
+            app:cardElevation="8dp"
+            app:cardBackgroundColor="@color/yellowCorner">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
                 android:gravity="center"
+                android:orientation="vertical"
                 android:padding="16dp">
 
                 <TextView
+                    android:id="@+id/math_total_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="TOTAL SCORE"
-                    android:textSize="10sp"
-                    android:textStyle="bold"
-                    android:textColor="#000000" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="20"
-                    android:textSize="30sp"
-                    android:textColor="#FFC60B"
+                    android:text="@string/total_score_title"
+                    android:textColor="#000000"
+                    android:textSize="11sp"
                     android:textStyle="bold" />
 
-
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/math_total_label"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:layout_marginTop="5dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="BEST SCORE"
-                        android:textSize="8sp"
-                        android:textColor="#000000" />
-
-                    <Space
-                        android:layout_width="16dp"
-                        android:layout_height="wrap_content" />
-
-                    <TextView
-                        android:id="@+id/best_score_meth"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text=": 10"
-                        android:textSize="8sp"
-                        android:textColor="#000000" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:layout_marginTop="2dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="FASTEST TIME"
-                        android:textSize="8sp"
-                        android:textColor="#000000" />
-
-                    <Space
-                        android:layout_width="8dp"
-                        android:layout_height="wrap_content" />
-
-                    <TextView
-                        android:id="@+id/fastest_time_math"
-                        android:layout_width="30dp"
-                        android:layout_height="wrap_content"
-                        android:text=": 04:07"
-                        android:textSize="7sp"
-                        android:textColor="#000000" />
-                </LinearLayout>
+                    android:text="15"
+                    android:textColor="#0084FF"
+                    android:textSize="35sp"
+                    android:textStyle="bold" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="#A6C4E5"
-                    android:layout_marginTop="8dp"/>
+                    android:layout_marginTop="5dp"
+                    android:background="@color/black33" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="MATHEMATICS\n        SCORE"
-                    android:textColor="#A6C4E5"
+                    android:text="@string/math_label"
+                    android:textColor="@color/blueSubject"
                     android:textSize="11sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:textAlignment="center"/>
 
             </LinearLayout>
 
@@ -304,7 +208,7 @@
         <androidx.cardview.widget.CardView
             android:id="@+id/scn_total_score"
             android:layout_width="114dp"
-            android:layout_height="160dp"
+            android:layout_height="137dp"
             android:gravity="center"
             android:orientation="vertical"
             app:cardCornerRadius="20dp"
@@ -313,95 +217,44 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
                 android:gravity="center"
+                android:orientation="vertical"
                 android:padding="16dp">
 
                 <TextView
+                    android:id="@+id/scn_total_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="TOTAL SCORE"
-                    android:textSize="10sp"
-                    android:textStyle="bold"
-                    android:textColor="#000000" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="20"
-                    android:textSize="30sp"
-                    android:textColor="#FFC60B"
+                    android:text="@string/total_score_title"
+                    android:textColor="#000000"
+                    android:textSize="11sp"
                     android:textStyle="bold" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/scn_total_label"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:layout_marginTop="5dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="BEST SCORE"
-                        android:textSize="8sp"
-                        android:textColor="#000000" />
-
-                    <Space
-                        android:layout_width="16dp"
-                        android:layout_height="wrap_content" />
-
-                    <TextView
-                        android:id="@+id/best_score_scn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text=": 10"
-                        android:textSize="8sp"
-                        android:textColor="#000000" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:layout_marginTop="2dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="FASTEST TIME"
-                        android:textSize="8sp"
-                        android:textColor="#000000" />
-
-                    <Space
-                        android:layout_width="8dp"
-                        android:layout_height="wrap_content" />
-
-                    <TextView
-                        android:id="@+id/fastest_time_scn"
-                        android:layout_width="30dp"
-                        android:layout_height="wrap_content"
-                        android:text=": 04:07"
-                        android:textSize="7sp"
-                        android:textColor="#000000" />
-                </LinearLayout>
+                    android:text="25"
+                    android:textColor="#FFC60B"
+                    android:textSize="35sp"
+                    android:textStyle="bold" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="#A6C4E5"
-                    android:layout_marginTop="8dp"/>
+                    android:layout_marginTop="5dp"
+                    android:background="@color/lineBlue" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="SCIENCE\n  SCORE"
-                    android:textColor="#A6C4E5"
+                    android:text="@string/scn_label"
+                    android:textColor="@color/blueSubject"
                     android:textSize="12sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:textAlignment="center"/>
 
             </LinearLayout>
 
@@ -410,13 +263,13 @@
     </LinearLayout>
 
     <androidx.cardview.widget.CardView
-        android:layout_width="357dp"
-        android:layout_height="270dp"
+        android:layout_width="360dp"
+        android:layout_height="300dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="15dp"
         app:cardBackgroundColor="@android:color/white"
         app:cardCornerRadius="20dp"
-        app:cardElevation="8dp">
+        app:cardElevation="8dp"
+        android:layout_marginTop="25dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -431,54 +284,73 @@
                 android:layout_height="wrap_content">
 
                 <LinearLayout
+                    android:id="@+id/setting_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="start|center_vertical"
                     android:orientation="horizontal"
-                    android:gravity="start|center_vertical">
+                    android:contentDescription="@string/setting">
 
                     <ImageButton
                         android:id="@+id/setting_icon"
                         android:layout_width="48dp"
                         android:layout_height="48dp"
-                        android:layout_marginStart="35dp"
+                        android:layout_marginStart="33dp"
                         android:background="@null"
+                        android:contentDescription="@string/setting"
                         android:scaleType="fitCenter"
-                        android:src="@drawable/setting_icon"
-                        android:contentDescription="@string/setting"/>
+                        android:src="@drawable/setting_icon" />
 
                     <Button
                         android:id="@+id/setting"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="1dp"
+                        android:layout_marginStart="2dp"
                         android:background="?android:attr/selectableItemBackground"
-                        android:text="Setting"
+                        android:text="@string/setting"
                         android:textColor="#000000"
-                        android:textSize="16sp" />
+                        android:textSize="17sp" />
 
                     <ImageButton
                         android:id="@+id/next_icon1"
                         android:layout_width="35dp"
                         android:layout_height="35dp"
-                        android:layout_marginStart="115dp"
+                        android:layout_marginStart="117dp"
                         android:background="@null"
+                        android:contentDescription="@string/next"
                         android:scaleType="fitCenter"
-                        android:src="@drawable/next_icon"
-                        android:contentDescription="@string/next"/>
+                        android:src="@drawable/next_icon" />
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
+
 
             <!-- button logout -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
+                <View
+                    android:layout_width="250dp"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="60dp"
+                    android:layout_marginTop="6dp"
+                    android:background="#66A6C4E5" />
+
+                <View
+                    android:layout_width="250dp"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="60dp"
+                    android:layout_marginTop="70dp"
+                    android:background="#66A6C4E5" />
+
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="start|center_vertical">
+                    android:layout_marginTop="16dp"
+                    android:gravity="start|center_vertical"
+                    android:orientation="horizontal">
 
                     <ImageButton
                         android:id="@+id/logout_icon"
@@ -486,18 +358,18 @@
                         android:layout_height="48dp"
                         android:layout_marginStart="35dp"
                         android:background="@null"
+                        android:contentDescription="@string/logout"
                         android:scaleType="fitCenter"
-                        android:src="@drawable/logout_icon"
-                        android:contentDescription="@string/logout"/>
+                        android:src="@drawable/logout_icon" />
 
                     <Button
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Log Out"
-                        android:textSize="16sp"
                         android:layout_marginStart="1dp"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:text="@string/logout"
                         android:textColor="#000000"
-                        android:background="?android:attr/selectableItemBackground" />
+                        android:textSize="17sp" />
 
                     <ImageButton
                         android:id="@+id/next_icon2"
@@ -505,9 +377,10 @@
                         android:layout_height="35dp"
                         android:layout_marginStart="111dp"
                         android:background="@null"
+                        android:contentDescription="@string/next"
                         android:scaleType="fitCenter"
-                        android:src="@drawable/next_icon"
-                        android:contentDescription="@string/next" />
+                        android:src="@drawable/next_icon" />
+
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -522,7 +395,7 @@
             android:orientation="horizontal"
             android:gravity="center"
             android:background="@drawable/nav_bar_corner"
-            android:layout_marginTop="55dp"
+            android:layout_marginTop="70dp"
             android:layout_gravity="bottom">
 
             <ImageButton

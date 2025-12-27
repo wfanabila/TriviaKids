@@ -19,8 +19,8 @@
 
         <ImageView
             android:id="@+id/closeButton"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="21dp"
+            android:layout_height="wrap_content"
             android:src="@android:drawable/ic_menu_close_clear_cancel"
             app:tint="#424242" />
 
