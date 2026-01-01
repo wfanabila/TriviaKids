@@ -28,12 +28,6 @@
             android:layout_height="match_parent">
         </androidx.cardview.widget.CardView>
 
-        <ImageView
-            android:id="@+id/soundon_button"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:src="@drawable/soundon">
-        </ImageView>
     </androidx.appcompat.widget.ActionMenuView>
 
     <androidx.cardview.widget.CardView
