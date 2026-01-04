@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/edit_profile"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@drawable/background"
+    tools:context=".EditProfile">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp">
+
+        <ImageView
+            android:id="@+id/closeButton"
+            android:layout_width="21dp"
+            android:layout_height="21dp"
+            android:src="@android:drawable/ic_menu_close_clear_cancel"
+            app:tint="#424242"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <TextView
+            android:id="@+id/editProfileLabel"
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:text="@string/edit_profile_page"
+            android:textSize="15sp"
+            android:textColor="#000000"
+            android:background="@drawable/edit_profile_label_bg"
+            android:padding="8dp"
+            android:gravity="center"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="347dp"
+        android:layout_height="614dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="50dp"
+        app:cardBackgroundColor="@android:color/white"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="15dp">
+
+        <FrameLayout
+            android:layout_width="155dp"
+            android:layout_height="155dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="30dp">
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_gravity="center"
+                app:cardElevation="0dp"
+                app:cardCornerRadius="75dp"
+                app:strokeWidth="4dp"
+                app:strokeColor="@color/greenCorner">
+
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:background="@drawable/pfp_ava"
+                    android:contentDescription="@string/profile_picture"/>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <ImageButton
+                android:id="@+id/button_edit_avatar"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_gravity="bottom|end"
+                android:background="@drawable/plus_icon"
+                android:contentDescription="@string/edit_avatar"
+                android:scaleType="fitCenter" />
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/username_txt"
+            android:layout_width="149dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="230dp"
+            android:paddingStart="23dp"
+            android:paddingEnd="16dp"
+            android:text="@string/username_label"
+            android:labelFor="@id/username" />
+
+        <EditText
+            android:id="@+id/username"
+            android:layout_width="310dp"
+            android:layout_height="48dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="16dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="250dp"
+            android:autofillHints="username"
+            android:inputType="text"
+            android:background="@drawable/edit_text_rounded_corner" />
+
+        <TextView
+            android:id="@+id/email_txt"
+            android:layout_width="149dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="310dp"
+            android:paddingStart="23dp"
+            android:paddingEnd="16dp"
+            android:text="@string/email_label"
+            android:labelFor="@id/email" />
+
+        <EditText
+            android:id="@+id/email"
+            android:layout_width="310dp"
+            android:layout_height="48dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="16dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="330dp"
+            android:ems="10"
+            android:inputType="textEmailAddress"
+            android:autofillHints="email"
+            android:background="@drawable/edit_text_rounded_corner" />
+
+        <TextView
+            android:id="@+id/curr_pass_txt"
+            android:layout_width="149dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="390dp"
+            android:paddingStart="23dp"
+            android:paddingEnd="5dp"
+            android:text="@string/currPass_label"
+            android:labelFor="@id/curr_pass"
+            android:contentDescription="@string/current_password_label"/>
+
+        <EditText
+            android:id="@+id/curr_pass"
+            android:layout_width="310dp"
+            android:layout_height="48dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="16dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="410dp"
+            android:ems="10"
+            android:inputType="textPassword"
+            android:autofillHints="currPass"
+            android:background="@drawable/edit_text_rounded_corner" />
+
+        <TextView
+            android:id="@+id/new_pass_txt"
+            android:layout_width="149dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="470dp"
+            android:paddingStart="23dp"
+            android:paddingEnd="16dp"
+            android:text="@string/newPass_label"
+            android:labelFor="@id/new_pass"
+            android:contentDescription="@string/new_password_label"/>
+
+        <EditText
+            android:id="@+id/new_pass"
+            android:layout_width="310dp"
+            android:layout_height="48dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="16dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="490dp"
+            android:ems="10"
+            android:inputType="textPassword"
+            android:autofillHints="newPass"
+            android:background="@drawable/edit_text_rounded_corner" />
+
+        <Button
+            android:id="@+id/save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="550dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/buttonPurple"
+            android:elevation="10dp"
+            android:outlineProvider="background"
+            android:stateListAnimator="@null"
+            android:text="@string/save_change"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            app:cornerRadius="10dp"
+            app:strokeColor="@color/white"
+            app:strokeWidth="2dp" />
+
+    </androidx.cardview.widget.CardView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:background="@drawable/nav_bar_corner"
+        android:layout_marginTop="55dp"
+        android:layout_gravity="bottom">
+
+        <ImageButton
+            android:id="@+id/score_icon"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@null"
+            android:contentDescription="@string/score"
+            android:scaleType="fitCenter"
+            android:layout_marginEnd="50dp"
+            android:src="@drawable/score_icon" />
+
+        <ImageButton
+            android:id="@+id/home_icon"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@null"
+            android:contentDescription="@string/home"
+            android:scaleType="fitCenter"
+            android:layout_marginEnd="50dp"
+            android:src="@drawable/home_icon" />
+
+        <ImageButton
+            android:id="@+id/profile_icon"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@null"
+            android:contentDescription="@string/profile"
+            android:scaleType="fitCenter"
+            android:src="@drawable/profile_icon" />
+
+    </LinearLayout>
+
+</LinearLayout>
