@@ -7,6 +7,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.quizapp.databinding.ActivityProfileBinding
+import com.google.android.material.bottomnavigation.BottomNavigationView
+
 
 class ProfileActivity : AppCompatActivity() {
 
@@ -40,13 +42,6 @@ class ProfileActivity : AppCompatActivity() {
         binding.nextIcon1.setOnClickListener { navigateToEditProfile() }
         binding.nextIcon2.setOnClickListener { navigateToEditProfile() }
 
-        binding.scoreIcon.setOnClickListener {
-            startActivity(Intent(this, ScoreAfterGame::class.java))
-        }
-
-        // home page ( yang pilih subject tu )
-        binding.homeIcon.setOnClickListener { }
-
         // score popup
         binding.engTotalScore.setOnClickListener {
             showScorePopup(
@@ -78,6 +73,26 @@ class ProfileActivity : AppCompatActivity() {
         // view pfp
         binding.imageView.setOnClickListener {
             showProfilePopup(ProfilePrefs.getAvatar(this))
+        }
+
+        val bottomNav: BottomNavigationView = findViewById(R.id.bottom_nav)
+        bottomNav.setOnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.home -> {
+                    val intent = Intent(this, HomePage::class.java)
+                    startActivity(intent)
+                    true
+                }
+                R.id.profile -> {
+                    // stay in profile page.
+                    true
+                }
+                R.id.setting -> {
+                    navigateToEditProfile()
+                    true
+                }
+                else -> false
+            }
         }
 
     }
