@@ -7,6 +7,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.example.quizapp.databinding.EditProfileBinding
 import androidx.appcompat.app.AlertDialog // alert dialog ~~
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
 class EditProfile : AppCompatActivity() {
@@ -44,23 +45,30 @@ class EditProfile : AppCompatActivity() {
             saveProfileChanges()
         }
 
-        binding.scoreIcon.setOnClickListener {
-            startActivity(Intent(this, ScoreAfterGame::class.java))
-        }
-
-        binding.homeIcon.setOnClickListener {
-
-        }
-
-        binding.profileIcon.setOnClickListener {
-            val intent = Intent(this, ProfileActivity::class.java)
-            startActivity(intent)
-        }
-
         binding.closeButton.setOnClickListener {
             showDiscardDialog()
         }
 
+
+        val bottomNav: BottomNavigationView = findViewById(com.example.quizapp.R.id.bottom_nav)
+        bottomNav.setOnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                com.example.quizapp.R.id.home -> {
+                    val intent = Intent(this, HomePage::class.java)
+                    startActivity(intent)
+                    true
+                }
+                com.example.quizapp.R.id.profile -> {
+                    navigateToProfileActivity()
+                    true
+                }
+                com.example.quizapp.R.id.setting -> {
+                    navigateToEditProfile()
+                    true
+                }
+                else -> false
+            }
+        }
     }
 
     private fun loadCurrentProfileData() {
@@ -110,4 +118,13 @@ class EditProfile : AppCompatActivity() {
     }
 
 
+    private fun navigateToProfileActivity() {
+        val intent = Intent(this, ProfileActivity::class.java)
+        startActivity(intent)
+    }
+
+    private fun navigateToEditProfile() {
+        val intent = Intent(this, EditProfile::class.java)
+        startActivity(intent)
+    }
 }
