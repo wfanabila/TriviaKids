@@ -5,24 +5,13 @@ import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.widget.Button
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.example.quizapp.databinding.QuizEnglish3Binding
 
 class QuizScienceSB : AppCompatActivity() {
+    private lateinit var binding: QuizEnglish3Binding
 
-    // Views
-    private lateinit var totalQuestion: TextView
-    private lateinit var questionText: TextView
-    private lateinit var imageView: ImageView
-    private lateinit var option1Button: Button
-    private lateinit var option2Button: Button
-    private lateinit var option3Button: Button
-    private lateinit var closeButton: ImageButton
-
-    // Data
+    // Data mapped from your screenshots
     private val words = arrayOf("BEE", "HEAD", "SOIL", "WATER")
     private val maskedWords = arrayOf("B _ E", "H E A _", "S O I _", "WA _ ER")
     private val options = arrayOf(
@@ -31,45 +20,32 @@ class QuizScienceSB : AppCompatActivity() {
         arrayOf("O", "P", "L"),
         arrayOf("T", "I", "O")
     )
-    private val photos = arrayOf(
-        R.drawable.bee,
-        R.drawable.head,
-        R.drawable.soil,
-        R.drawable.water
-    )
-    private val correctAnswers = arrayOf(2, 1, 2, 0)
+    private val photos = arrayOf(R.drawable.bee, R.drawable.head, R.drawable.soil, R.drawable.water)
+    private val correctAnswers = arrayOf(2, 1, 2, 0) // Indices of correct options
 
     private var currentIdx = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.quiz_science_1)
-
-        // Init views
-        totalQuestion = findViewById(R.id.totalQuestion)
-        questionText = findViewById(R.id.questionText)
-        imageView = findViewById(R.id.imageView)
-        option1Button = findViewById(R.id.option1Button)
-        option2Button = findViewById(R.id.option2Button)
-        option3Button = findViewById(R.id.option3Button)
-        closeButton = findViewById(R.id.closeButton)
+        binding = QuizEnglish3Binding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         displayQuestion()
 
-        option1Button.setOnClickListener { checkAnswer(0) }
-        option2Button.setOnClickListener { checkAnswer(1) }
-        option3Button.setOnClickListener { checkAnswer(2) }
-        closeButton.setOnClickListener { finish() }
+        binding.option1Button.setOnClickListener { checkAnswer(0) }
+        binding.option2Button.setOnClickListener { checkAnswer(1) }
+        binding.option3Button.setOnClickListener { checkAnswer(2) }
+        binding.closeButton.setOnClickListener { finish() }
     }
 
     private fun displayQuestion() {
-        totalQuestion.text = "${currentIdx + 7} / 10"
-        questionText.text = maskedWords[currentIdx]
-        imageView.setImageResource(photos[currentIdx])
+        binding.totalQuestion.text = "${currentIdx + 7} / 10" // Matching your 7/10 screenshot start
+        binding.questionText.text = maskedWords[currentIdx]
+        binding.imageView.setImageResource(photos[currentIdx])
 
-        option1Button.text = options[currentIdx][0]
-        option2Button.text = options[currentIdx][1]
-        option3Button.text = options[currentIdx][2]
+        binding.option1Button.text = options[currentIdx][0]
+        binding.option2Button.text = options[currentIdx][1]
+        binding.option3Button.text = options[currentIdx][2]
 
         resetButtonColors()
         setButtonsEnabled(true)
@@ -77,10 +53,10 @@ class QuizScienceSB : AppCompatActivity() {
 
     private fun checkAnswer(selectedIdx: Int) {
         if (selectedIdx == correctAnswers[currentIdx]) {
+            // CORRECT: Green, Reveal, and Advance
             setButtonsEnabled(false)
-            updateButtonColor(selectedIdx, "#61E547")
-
-            questionText.text = words[currentIdx].replace("", " ").trim()
+            updateButtonColor(selectedIdx, "#61E547") // Green
+            binding.questionText.text = words[currentIdx].replace("", " ").trim()
 
             Handler(Looper.getMainLooper()).postDelayed({
                 if (currentIdx < words.size - 1) {
@@ -89,29 +65,30 @@ class QuizScienceSB : AppCompatActivity() {
                 }
             }, 1000)
         } else {
-            updateButtonColor(selectedIdx, "#FF4A4C")
+            // WRONG: Just turn this button red (don't advance)
+            updateButtonColor(selectedIdx, "#FF4A4C") // Red
         }
     }
 
     private fun updateButtonColor(btnIdx: Int, colorHex: String) {
         val tint = ColorStateList.valueOf(Color.parseColor(colorHex))
-        when (btnIdx) {
-            0 -> option1Button.backgroundTintList = tint
-            1 -> option2Button.backgroundTintList = tint
-            2 -> option3Button.backgroundTintList = tint
+        when(btnIdx) {
+            0 -> binding.option1Button.backgroundTintList = tint
+            1 -> binding.option2Button.backgroundTintList = tint
+            2 -> binding.option3Button.backgroundTintList = tint
         }
     }
 
     private fun resetButtonColors() {
         val defaultTint = ColorStateList.valueOf(Color.parseColor("#AEB8FE"))
-        option1Button.backgroundTintList = defaultTint
-        option2Button.backgroundTintList = defaultTint
-        option3Button.backgroundTintList = defaultTint
+        binding.option1Button.backgroundTintList = defaultTint
+        binding.option2Button.backgroundTintList = defaultTint
+        binding.option3Button.backgroundTintList = defaultTint
     }
 
     private fun setButtonsEnabled(enabled: Boolean) {
-        option1Button.isEnabled = enabled
-        option2Button.isEnabled = enabled
-        option3Button.isEnabled = enabled
+        binding.option1Button.isEnabled = enabled
+        binding.option2Button.isEnabled = enabled
+        binding.option3Button.isEnabled = enabled
     }
 }
