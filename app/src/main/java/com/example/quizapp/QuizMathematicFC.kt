@@ -38,7 +38,7 @@ class QuizMath : AppCompatActivity() {
             binding.option0,
             binding.option1,
             binding.option2,
-            binding.option3
+            binding.option3,
         )
 
         displayQuestion()
