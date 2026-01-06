@@ -62,18 +62,18 @@
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:layout_gravity="center"
-                app:cardElevation="0dp"
                 app:cardCornerRadius="75dp"
-                app:strokeWidth="4dp"
-                app:strokeColor="@color/greenCorner">
+                app:cardElevation="0dp"
+                app:strokeColor="@color/greenCorner"
+                app:strokeWidth="4dp">
 
                 <ImageView
                     android:id="@+id/imageView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:scaleType="centerCrop"
                     android:background="@drawable/pfp_ava"
-                    android:contentDescription="@string/profile_picture"/>
+                    android:contentDescription="@string/profile_picture"
+                    android:scaleType="centerCrop" />
 
             </com.google.android.material.card.MaterialCardView>
 
@@ -92,93 +92,93 @@
             android:layout_width="149dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="230dp"
+            android:labelFor="@id/username"
             android:paddingStart="23dp"
             android:paddingEnd="16dp"
-            android:text="@string/username_label"
-            android:labelFor="@id/username" />
+            android:text="@string/username_label" />
 
         <EditText
             android:id="@+id/username"
             android:layout_width="310dp"
             android:layout_height="48dp"
-            android:paddingStart="10dp"
-            android:paddingEnd="16dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="250dp"
             android:autofillHints="username"
+            android:background="@drawable/edit_text_rounded_corner"
             android:inputType="text"
-            android:background="@drawable/edit_text_rounded_corner" />
+            android:paddingStart="10dp"
+            android:paddingEnd="16dp" />
 
         <TextView
             android:id="@+id/email_txt"
             android:layout_width="149dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="310dp"
+            android:labelFor="@id/email"
             android:paddingStart="23dp"
             android:paddingEnd="16dp"
-            android:text="@string/email_label"
-            android:labelFor="@id/email" />
+            android:text="@string/email_label" />
 
         <EditText
             android:id="@+id/email"
             android:layout_width="310dp"
             android:layout_height="48dp"
-            android:paddingStart="10dp"
-            android:paddingEnd="16dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="330dp"
+            android:autofillHints="email"
+            android:background="@drawable/edit_text_rounded_corner"
             android:ems="10"
             android:inputType="textEmailAddress"
-            android:autofillHints="email"
-            android:background="@drawable/edit_text_rounded_corner" />
+            android:paddingStart="10dp"
+            android:paddingEnd="16dp" />
 
         <TextView
             android:id="@+id/curr_pass_txt"
             android:layout_width="149dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="390dp"
+            android:contentDescription="@string/current_password_label"
+            android:labelFor="@id/curr_pass"
             android:paddingStart="23dp"
             android:paddingEnd="5dp"
-            android:text="@string/currPass_label"
-            android:labelFor="@id/curr_pass"
-            android:contentDescription="@string/current_password_label"/>
+            android:text="@string/currPass_label" />
 
         <EditText
             android:id="@+id/curr_pass"
             android:layout_width="310dp"
             android:layout_height="48dp"
-            android:paddingStart="10dp"
-            android:paddingEnd="16dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="410dp"
+            android:autofillHints="currPass"
+            android:background="@drawable/edit_text_rounded_corner"
             android:ems="10"
             android:inputType="textPassword"
-            android:autofillHints="currPass"
-            android:background="@drawable/edit_text_rounded_corner" />
+            android:paddingStart="10dp"
+            android:paddingEnd="16dp" />
 
         <TextView
             android:id="@+id/new_pass_txt"
             android:layout_width="149dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="470dp"
+            android:contentDescription="@string/new_password_label"
+            android:labelFor="@id/new_pass"
             android:paddingStart="23dp"
             android:paddingEnd="16dp"
-            android:text="@string/newPass_label"
-            android:labelFor="@id/new_pass"
-            android:contentDescription="@string/new_password_label"/>
+            android:text="@string/newPass_label" />
 
         <EditText
             android:id="@+id/new_pass"
             android:layout_width="310dp"
             android:layout_height="48dp"
-            android:paddingStart="10dp"
-            android:paddingEnd="16dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="490dp"
+            android:autofillHints="newPass"
+            android:background="@drawable/edit_text_rounded_corner"
             android:ems="10"
             android:inputType="textPassword"
-            android:autofillHints="newPass"
-            android:background="@drawable/edit_text_rounded_corner" />
+            android:paddingStart="10dp"
+            android:paddingEnd="16dp" />
 
         <Button
             android:id="@+id/save"
