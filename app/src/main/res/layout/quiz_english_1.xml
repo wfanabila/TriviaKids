@@ -56,13 +56,12 @@
 
                 <TextView
                     android:id="@+id/totalQuestion"
-                    android:layout_width="50dp"
+                    android:layout_width="80dp"
                     android:layout_height="40dp"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="3dp"
+                    android:gravity="center"
                     android:text="1/3"
                     android:textColor="@color/black"
-                    android:textSize="20sp" />
+                    android:textSize="19sp" />
 
             </androidx.cardview.widget.CardView>
 
@@ -77,13 +76,12 @@
 
                 <TextView
                     android:id="@+id/timerText"
-                    android:layout_width="50dp"
+                    android:layout_width="80dp"
                     android:layout_height="40dp"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="3dp"
+                    android:gravity="center"
                     android:text="00:00"
                     android:textColor="@color/black"
-                    android:textSize="18sp" />
+                    android:textSize="19sp" />
 
             </androidx.cardview.widget.CardView>
 

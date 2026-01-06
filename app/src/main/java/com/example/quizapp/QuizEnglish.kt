@@ -3,8 +3,9 @@ package com.example.quizapp
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
-import android.media.MediaPlayer
 import android.os.Bundle
+import android.os.CountDownTimer
+import android.os.SystemClock
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.quizapp.databinding.QuizEnglish1Binding
@@ -14,7 +15,7 @@ class QuizEnglish : AppCompatActivity() {
 
     private val questions = arrayOf("Hello! I am a _______",
         "Guess my occupation!",
-        "What job do you think I am?",)
+        "I am a _______")
 
     private val options = arrayOf(arrayOf("Gardener", "Postman", "Fireman", "Policeman"),
         arrayOf("Policeman", "Fireman", "Doctor", "Gardener"),
@@ -26,7 +27,12 @@ class QuizEnglish : AppCompatActivity() {
     private var currentQuestionIndex = 0
     private var score = 0
 
-    private var mediaPlayer: MediaPlayer? = null
+    private var timer: CountDownTimer? = null
+    private var totalElapsedTime: Long = 0 // Total time for the entire quiz
+    private var isTimerRunning = false
+    private var startTime: Long = 0
+    private var currentQuestionStartTime: Long = 0
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,23 +41,15 @@ class QuizEnglish : AppCompatActivity() {
 
         totalQuestion()
 
-        mediaPlayer = MediaPlayer.create(this, R.raw.sound)
-        mediaPlayer?.isLooping = true
-
-        binding.soundonButton.setOnClickListener {
-            if (mediaPlayer?.isPlaying == true) {
-                mediaPlayer?.pause()
-            } else {
-                mediaPlayer?.start()
-            }
+        binding.closeButton.setOnClickListener {
+            val intent = Intent(this, HomePage::class.java)
+            startActivity(intent)
         }
+
+        // Start the continuous stopwatch
+        startContinuousStopwatch()
 
         displayQuestion()
-
-        binding.closeButton.setOnClickListener {
-            mediaPlayer?.stop()
-            finish()
-        }
 
         binding.option1Button.setOnClickListener {
             checkAnswer(0)
@@ -67,12 +65,75 @@ class QuizEnglish : AppCompatActivity() {
         }
     }
 
+    private fun startContinuousStopwatch() {
+        // Record the overall start time
+        startTime = SystemClock.elapsedRealtime()
+
+        // Cancel any existing timer
+        timer?.cancel()
+
+        // Create and start a continuous timer that updates every 10ms
+        timer = object : CountDownTimer(Long.MAX_VALUE, 10) {
+            override fun onTick(millisUntilFinished: Long) {
+                totalElapsedTime = SystemClock.elapsedRealtime() - startTime
+                updateTimerText()
+            }
+
+            override fun onFinish() {
+                // This won't be called since we're using Long.MAX_VALUE
+            }
+        }.start()
+
+        isTimerRunning = true
+    }
+
+    private fun updateTimerText() {
+        // Calculate minutes, seconds, and milliseconds
+        val totalSeconds = (totalElapsedTime / 1000).toInt()
+        val minutes = totalSeconds / 60
+        val seconds = totalSeconds % 60
+        val milliseconds = (totalElapsedTime % 1000).toInt()
+
+        // Format: MM:SS (no milliseconds for cleaner display)
+        binding.timerText.text = String.format("%d:%02d", minutes, seconds)
+    }
+
+    private fun pauseStopwatch() {
+        timer?.cancel()
+        isTimerRunning = false
+    }
+
+    private fun resumeStopwatch() {
+        if (!isTimerRunning) {
+            // Adjust start time based on elapsed time so far
+            startTime = SystemClock.elapsedRealtime() - totalElapsedTime
+
+            timer = object : CountDownTimer(Long.MAX_VALUE, 10) {
+                override fun onTick(millisUntilFinished: Long) {
+                    totalElapsedTime = SystemClock.elapsedRealtime() - startTime
+                    updateTimerText()
+                }
+
+                override fun onFinish() {
+                    // This won't be called
+                }
+            }.start()
+
+            isTimerRunning = true
+        }
+    }
+
+    private fun stopStopwatch() {
+        timer?.cancel()
+        isTimerRunning = false
+        totalElapsedTime = SystemClock.elapsedRealtime() - startTime
+    }
+
     private fun totalQuestion() {
         val currentNumber = currentQuestionIndex + 1
         val totalNumber = questions.size
         binding.totalQuestion.text = "$currentNumber / $totalNumber"
     }
-
 
     private fun correctButtonColors(buttonIndex: Int) {
         val greenTint = ColorStateList.valueOf(Color.parseColor("#61E547"))
@@ -109,6 +170,7 @@ class QuizEnglish : AppCompatActivity() {
 
     private fun displayQuestion() {
         totalQuestion()
+        resumeStopwatch() // Ensure timer is running when displaying question
 
         binding.questionText.text = questions[currentQuestionIndex]
         binding.option1Button.text = options[currentQuestionIndex][0]
@@ -123,6 +185,7 @@ class QuizEnglish : AppCompatActivity() {
     }
 
     private fun checkAnswer(selectedAnswerIndex: Int) {
+        // Don't pause the stopwatch - let it continue running
         setOptionButtonsEnabled(false)
 
         val correctAnswerIndex = correctAnswers[currentQuestionIndex]
@@ -141,15 +204,41 @@ class QuizEnglish : AppCompatActivity() {
                 displayQuestion()
             }, 1000)
         } else {
-            val intent = Intent(this, QuizEnglishSB::class.java)
-            intent.putExtra("CURRENT_SCORE", score)
-            startActivity(intent)
-            finish()
+            // Quiz finished - stop the stopwatch and pass total time
+            stopStopwatch()
+            binding.questionText.postDelayed({
+                val intent = Intent(this, QuizEnglishSB::class.java)
+                intent.putExtra("CURRENT_SCORE", score)
+                intent.putExtra("TOTAL_TIME", totalElapsedTime) // Pass total elapsed time
+                intent.putExtra("QUESTIONS_COMPLETED", questions.size)
+                startActivity(intent)
+                finish()
+            }, 1000)
         }
     }
 
+    override fun onPause() {
+        super.onPause()
+        pauseStopwatch()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        resumeStopwatch()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        timer?.cancel()
+    }
+
     private fun showResults() {
-        Toast.makeText(this, "Quiz Finished! Your score: $score / ${questions.size}", Toast.LENGTH_LONG).show()
+        val minutes = (totalElapsedTime / 60000).toInt()
+        val seconds = ((totalElapsedTime % 60000) / 1000).toInt()
+
+        Toast.makeText(this,
+            "Quiz Finished! Score: $score/${questions.size}\nTime: ${minutes}m ${seconds}s",
+            Toast.LENGTH_LONG).show()
     }
 
     private fun setOptionButtonsEnabled(enabled: Boolean) {
