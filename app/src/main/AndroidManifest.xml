@@ -17,7 +17,25 @@
             android:theme="@style/Theme.QuizApp" />
 
         <activity
+            android:name=".HomePage"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
+        <activity
             android:name=".QuizEnglish"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".QuizEnglishSB"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -59,14 +77,7 @@
 <!--            <category android:name="android.intent.category.LAUNCHER"/>-->
 <!--        </activity>-->
 
-        <activity
-            android:name=".QuizEnglishSB"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
-        </activity>
+
 
         <activity
             android:name=".QuizScience"
@@ -87,7 +98,7 @@
         </activity>
 
         <activity
-            android:name=".QuizMathsSB"
+            android:name=".QuizMaths"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -96,7 +107,7 @@
         </activity>
 
         <activity
-            android:name=".QuizMaths"
+            android:name=".QuizMathsSB"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
