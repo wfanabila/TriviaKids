@@ -8,7 +8,7 @@
     android:orientation="vertical"
     android:padding="16dp"
     android:background="@drawable/background"
-    tools:context=".QuizScience">
+    tools:context=".QuizScienceSB">
 
     <androidx.appcompat.widget.ActionMenuView
         android:layout_width="398dp"
@@ -32,9 +32,9 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="350dp"
-        android:layout_height="450dp"
-        android:layout_marginTop="25dp"
+        android:layout_height="400dp"
         android:layout_gravity="center_horizontal"
+        android:layout_marginTop="25dp"
         app:cardBackgroundColor="@android:color/white"
         app:cardCornerRadius="20dp"
         app:cardElevation="15dp">
@@ -110,18 +110,18 @@
 
         <ImageView
             android:id="@+id/imageView"
-            android:layout_width="240dp"
-            android:layout_height="240dp"
-            android:layout_marginTop="160dp"
-            android:layout_gravity="center_horizontal">
-        </ImageView>
-
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="165dp"
+            />
     </androidx.cardview.widget.CardView>
+
 
     <LinearLayout
         style="?android:attr/buttonBarStyle"
-        android:layout_width="380dp"
-        android:layout_height="140dp"
+        android:layout_width="250dp"
+        android:layout_height="113dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="30dp"
         android:orientation="horizontal">
@@ -130,34 +130,16 @@
             android:id="@+id/option_1_button"
             style="?android:attr/buttonBarButtonStyle"
             android:layout_width="60dp"
-            android:layout_height="140dp"
+            android:layout_height="100dp"
             android:layout_margin="4dp"
             android:layout_weight="1"
             android:backgroundTint="@color/lightPurple"
+            android:elevation="10dp"
+            android:outlineProvider="background"
+            android:stateListAnimator="@null"
             android:text="Option 1"
             android:textColor="@color/black"
             android:textSize="20sp"
-            android:elevation="10dp"
-            android:stateListAnimator="@null"
-            android:outlineProvider="background"
-            app:cornerRadius="20dp"
-            app:strokeColor="@color/white"
-            app:strokeWidth="2dp" />
-
-        <Button
-            android:id="@+id/option_2_button"
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="60dp"
-            android:layout_height="140dp"
-            android:layout_margin="4dp"
-            android:layout_weight="1"
-            android:backgroundTint="@color/lightPurple"
-            android:text="Option 2"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:elevation="10dp"
-            android:stateListAnimator="@null"
-            android:outlineProvider="background"
             app:cornerRadius="20dp"
             app:strokeColor="@color/white"
             app:strokeWidth="2dp" />
@@ -165,48 +147,59 @@
 
     <LinearLayout
         style="?android:attr/buttonBarStyle"
-        android:layout_width="380dp"
-        android:layout_height="140dp"
+        android:layout_width="250dp"
+        android:layout_height="108dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/option_2_button"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="60dp"
+            android:layout_height="100dp"
+            android:layout_margin="4dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/lightPurple"
+            android:elevation="10dp"
+            android:outlineProvider="background"
+            android:stateListAnimator="@null"
+            android:text="Option 2"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:cornerRadius="20dp"
+            app:strokeColor="@color/white"
+            app:strokeWidth="2dp" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        style="?android:attr/buttonBarStyle"
+        android:layout_width="250dp"
+        android:layout_height="107dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="5dp"
         android:orientation="horizontal">
 
         <Button
             android:id="@+id/option_3_button"
             style="?android:attr/buttonBarButtonStyle"
             android:layout_width="60dp"
-            android:layout_height="140dp"
+            android:layout_height="100dp"
             android:layout_margin="4dp"
             android:layout_weight="1"
             android:backgroundTint="@color/lightPurple"
+            android:elevation="10dp"
+            android:outlineProvider="background"
+            android:stateListAnimator="@null"
             android:text="Option 3"
             android:textColor="@color/black"
             android:textSize="20sp"
-            android:elevation="10dp"
-            android:stateListAnimator="@null"
-            android:outlineProvider="background"
-            app:cornerRadius="20dp"
-            app:strokeColor="@color/white"
-            app:strokeWidth="2dp" />
-
-        <Button
-            android:id="@+id/option_4_button"
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="60dp"
-            android:layout_height="140dp"
-            android:layout_margin="4dp"
-            android:layout_weight="1"
-            android:backgroundTint="@color/lightPurple"
-            android:text="Option 4"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:elevation="10dp"
-            android:stateListAnimator="@null"
-            android:outlineProvider="background"
             app:cornerRadius="20dp"
             app:strokeColor="@color/white"
             app:strokeWidth="2dp" />
     </LinearLayout>
+
 
 </LinearLayout>
 

@@ -1,49 +1,56 @@
 package com.example.quizapp
 
+import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
-import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.SystemClock
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.quizapp.databinding.QuizScience2Binding
+import com.example.quizapp.databinding.QuizScience1Binding
 
-class QuizScienceSB : AppCompatActivity() {
-    private lateinit var binding: QuizScience2Binding
+class QuizScience : AppCompatActivity() {
+    private lateinit var binding: QuizScience1Binding
 
-    private val questions = arrayOf("B _ E",
-        "_ O I L",
-        "W A _ E R",)
+    private val questions = arrayOf("This is a picture of?",
+        "What body part shown below?",
+        "What do you call this?",
+        "Name this sense organ"
+    )
 
-    private val options = arrayOf(arrayOf("P", "A", "E"),
-        arrayOf("O", "S", "L"),
-        arrayOf("B", "T", "F"))
+    private val options = arrayOf(arrayOf("Eye", "Mouth", "Ear", "Hand"),
+        arrayOf("Eye", "Mouth", "Ear", "Hand"),
+        arrayOf("Eye", "Mouth", "Ear", "Hand"),
+        arrayOf("Eye", "Mouth", "Ear", "Hand"))
 
-    private val photos = arrayOf(R.drawable.bee, R.drawable.soil, R.drawable.water)
-    private val correctAnswers = arrayOf(1, 2, 1)
+    private val photos = arrayOf(R.drawable.ear, R.drawable.mouth, R.drawable.hand, R.drawable.eye)
+    private val correctAnswers = arrayOf(2, 1, 3, 0)
 
     private var currentQuestionIndex = 0
     private var score = 0
 
-    private var previousQuestionsCompleted = 0
-
     private var timer: CountDownTimer? = null
-    private var totalElapsedTime: Long = 0 // Total time from previous quiz + current quiz
+    private var totalElapsedTime: Long = 0 // Total time for the entire quiz
     private var isTimerRunning = false
     private var startTime: Long = 0
+    private var currentQuestionStartTime: Long = 0
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = QuizScience2Binding.inflate(layoutInflater)
+        binding = QuizScience1Binding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        score = intent.getIntExtra("CURRENT_SCORE", 0)
-        totalElapsedTime = intent.getLongExtra("TOTAL_TIME", 0L)
-        previousQuestionsCompleted = intent.getIntExtra("QUESTIONS_COMPLETED", 0)
-
         totalQuestion()
+
+        binding.closeButton.setOnClickListener {
+            val intent = Intent(this, HomePage::class.java)
+            startActivity(intent)
+        }
+
+        // Start the continuous stopwatch
+        startContinuousStopwatch()
 
         displayQuestion()
 
@@ -56,16 +63,19 @@ class QuizScienceSB : AppCompatActivity() {
         binding.option3Button.setOnClickListener {
             checkAnswer(2)
         }
+        binding.option4Button.setOnClickListener {
+            checkAnswer(3)
+        }
     }
 
     private fun startContinuousStopwatch() {
-        // Start from the elapsed time passed from previous quiz
-        startTime = SystemClock.elapsedRealtime() - totalElapsedTime
+        // Record the overall start time
+        startTime = SystemClock.elapsedRealtime()
 
         // Cancel any existing timer
         timer?.cancel()
 
-        // Create and start a continuous timer
+        // Create and start a continuous timer that updates every 10ms
         timer = object : CountDownTimer(Long.MAX_VALUE, 10) {
             override fun onTick(millisUntilFinished: Long) {
                 totalElapsedTime = SystemClock.elapsedRealtime() - startTime
@@ -73,7 +83,7 @@ class QuizScienceSB : AppCompatActivity() {
             }
 
             override fun onFinish() {
-                // This won't be called
+                // This won't be called since we're using Long.MAX_VALUE
             }
         }.start()
 
@@ -81,11 +91,13 @@ class QuizScienceSB : AppCompatActivity() {
     }
 
     private fun updateTimerText() {
+        // Calculate minutes, seconds, and milliseconds
         val totalSeconds = (totalElapsedTime / 1000).toInt()
         val minutes = totalSeconds / 60
         val seconds = totalSeconds % 60
         val milliseconds = (totalElapsedTime % 1000).toInt()
 
+        // Format: MM:SS (no milliseconds for cleaner display)
         binding.timerText.text = String.format("%d:%02d", minutes, seconds)
     }
 
@@ -96,6 +108,7 @@ class QuizScienceSB : AppCompatActivity() {
 
     private fun resumeStopwatch() {
         if (!isTimerRunning) {
+            // Adjust start time based on elapsed time so far
             startTime = SystemClock.elapsedRealtime() - totalElapsedTime
 
             timer = object : CountDownTimer(Long.MAX_VALUE, 10) {
@@ -120,16 +133,10 @@ class QuizScienceSB : AppCompatActivity() {
     }
 
     private fun totalQuestion() {
-        // Current question number = completed from previous quiz + current index + 1
-        val currentNumber = previousQuestionsCompleted + currentQuestionIndex + 1
-
-        // Total questions = previous quiz questions + current quiz questions
-        val totalNumber = previousQuestionsCompleted + questions.size
-
+        val currentNumber = currentQuestionIndex + 1
+        val totalNumber = questions.size
         binding.totalQuestion.text = "$currentNumber / $totalNumber"
     }
-
-
 
     private fun correctButtonColors(buttonIndex: Int) {
         val greenTint = ColorStateList.valueOf(Color.parseColor("#61E547"))
@@ -137,6 +144,7 @@ class QuizScienceSB : AppCompatActivity() {
             0 -> binding.option1Button.backgroundTintList = greenTint
             1 -> binding.option2Button.backgroundTintList = greenTint
             2 -> binding.option3Button.backgroundTintList = greenTint
+            3 -> binding.option4Button.backgroundTintList = greenTint
         }
     }
 
@@ -149,6 +157,7 @@ class QuizScienceSB : AppCompatActivity() {
                     0 -> binding.option1Button.backgroundTintList = redTint
                     1 -> binding.option2Button.backgroundTintList = redTint
                     2 -> binding.option3Button.backgroundTintList = redTint
+                    3 -> binding.option4Button.backgroundTintList = redTint
                 }
             }
         }
@@ -159,16 +168,18 @@ class QuizScienceSB : AppCompatActivity() {
         binding.option1Button.backgroundTintList = defaultTint
         binding.option2Button.backgroundTintList = defaultTint
         binding.option3Button.backgroundTintList = defaultTint
+        binding.option4Button.backgroundTintList = defaultTint
     }
 
     private fun displayQuestion() {
         totalQuestion()
-        resumeStopwatch()
+        resumeStopwatch() // Ensure timer is running when displaying question
 
         binding.questionText.text = questions[currentQuestionIndex]
         binding.option1Button.text = options[currentQuestionIndex][0]
         binding.option2Button.text = options[currentQuestionIndex][1]
         binding.option3Button.text = options[currentQuestionIndex][2]
+        binding.option4Button.text = options[currentQuestionIndex][3]
 
         binding.imageView.setImageResource(photos[currentQuestionIndex])
 
@@ -177,6 +188,7 @@ class QuizScienceSB : AppCompatActivity() {
     }
 
     private fun checkAnswer(selectedAnswerIndex: Int) {
+        // Don't pause the stopwatch - let it continue running
         setOptionButtonsEnabled(false)
 
         val correctAnswerIndex = correctAnswers[currentQuestionIndex]
@@ -195,19 +207,47 @@ class QuizScienceSB : AppCompatActivity() {
                 displayQuestion()
             }, 1000)
         } else {
+            // Quiz finished - stop the stopwatch and pass total time
             stopStopwatch()
-            showResults()
+            binding.questionText.postDelayed({
+                val intent = Intent(this, QuizScienceSB::class.java)
+                intent.putExtra("CURRENT_SCORE", score)
+                intent.putExtra("TOTAL_TIME", totalElapsedTime) // Pass total elapsed time
+                intent.putExtra("QUESTIONS_COMPLETED", questions.size)
+                startActivity(intent)
+                finish()
+            }, 1000)
         }
     }
 
+    override fun onPause() {
+        super.onPause()
+        pauseStopwatch()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        resumeStopwatch()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        timer?.cancel()
+    }
+
     private fun showResults() {
-        val totalQuestionCount = questions.size + 3
-        Toast.makeText(this, "Quiz Finished! Your score: $score / $totalQuestionCount", Toast.LENGTH_LONG).show()
+        val minutes = (totalElapsedTime / 60000).toInt()
+        val seconds = ((totalElapsedTime % 60000) / 1000).toInt()
+
+        Toast.makeText(this,
+            "Quiz Finished! Score: $score/${questions.size}\nTime: ${minutes}m ${seconds}s",
+            Toast.LENGTH_LONG).show()
     }
 
     private fun setOptionButtonsEnabled(enabled: Boolean) {
         binding.option1Button.isEnabled = enabled
         binding.option2Button.isEnabled = enabled
         binding.option3Button.isEnabled = enabled
+        binding.option4Button.isEnabled = enabled
     }
 }
