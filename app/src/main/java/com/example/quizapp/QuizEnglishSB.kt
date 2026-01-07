@@ -14,14 +14,18 @@ class QuizEnglishSB : AppCompatActivity() {
 
     private val questions = arrayOf("_ P P L E",
         "P I N E A P P _ E",
-        "G _ A P E",)
+        "G _ A P E",
+        "W A T E R _ E L O N",
+        "O R A _ G E")
 
     private val options = arrayOf(arrayOf("P", "A", "C"),
         arrayOf("O", "S", "L"),
-        arrayOf("B", "R", "F"))
+        arrayOf("B", "R", "F"),
+        arrayOf("O", "S", "M"),
+        arrayOf("N", "G", "F"))
 
-    private val photos = arrayOf(R.drawable.apple, R.drawable.pineapple, R.drawable.grape)
-    private val correctAnswers = arrayOf(1, 2, 1)
+    private val photos = arrayOf(R.drawable.apple, R.drawable.pineapple, R.drawable.grape, R.drawable.watermelon, R.drawable.orange)
+    private val correctAnswers = arrayOf(1, 2, 1, 2, 0)
 
     private var currentQuestionIndex = 0
     private var score = 0

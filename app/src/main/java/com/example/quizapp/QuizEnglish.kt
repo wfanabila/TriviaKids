@@ -15,14 +15,19 @@ class QuizEnglish : AppCompatActivity() {
 
     private val questions = arrayOf("Hello! I am a _______",
         "Guess my occupation!",
-        "I am a _______")
+        "I am a _______",
+        "She is ______",
+        "Jay is ______"
+        )
 
     private val options = arrayOf(arrayOf("Gardener", "Postman", "Fireman", "Policeman"),
         arrayOf("Policeman", "Fireman", "Doctor", "Gardener"),
-        arrayOf("Gardener", "Doctor", "Policeman", "Postman"))
+        arrayOf("Gardener", "Doctor", "Policeman", "Postman"),
+        arrayOf("Crying", "Running", "Eating", "Sleeping"),
+        arrayOf("Crying", "Running", "Eating", "Sleeping"))
 
-    private val photos = arrayOf(R.drawable.fireman, R.drawable.policeman, R.drawable.doctor)
-    private val correctAnswers = arrayOf(2, 0, 1)
+    private val photos = arrayOf(R.drawable.fireman, R.drawable.policeman, R.drawable.doctor, R.drawable.running, R.drawable.eating)
+    private val correctAnswers = arrayOf(2, 0, 1, 1, 2)
 
     private var currentQuestionIndex = 0
     private var score = 0
