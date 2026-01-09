@@ -1,213 +1,89 @@
-package com.example.quizapp
-
-import android.content.res.ColorStateList
 import android.graphics.Color
-import android.media.MediaPlayer
 import android.os.Bundle
-import android.os.CountDownTimer
-import android.os.SystemClock
-import android.widget.Toast
+import android.os.Handler
+import android.os.Looper
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.example.quizapp.databinding.QuizScience2Binding
 
-class QuizScienceSB : AppCompatActivity() {
-    private lateinit var binding: QuizScience2Binding
+// 1. Data model for the handshake
+data class Question(
+    val displayWord: String,
+    val options: List<String>,
+    val correctAnswerIndex: Int,
+    val imageResId: Int
+)
 
-    private val questions = arrayOf("B _ E",
-        "_ O I L",
-        "W A _ E R",)
+class QuizActivity : AppCompatActivity() {
 
-    private val options = arrayOf(arrayOf("P", "A", "E"),
-        arrayOf("O", "S", "L"),
-        arrayOf("B", "T", "F"))
-
-    private val photos = arrayOf(R.drawable.bee, R.drawable.soil, R.drawable.water)
-    private val correctAnswers = arrayOf(1, 2, 1)
+    private lateinit var tvWordDisplay: TextView
+    private lateinit var ivHintImage: ImageView
+    private lateinit var buttons: List<Button>
 
     private var currentQuestionIndex = 0
-    private var score = 0
-
-    private var previousQuestionsCompleted = 0
-
-    private var timer: CountDownTimer? = null
-    private var totalElapsedTime: Long = 0 // Total time from previous quiz + current quiz
-    private var isTimerRunning = false
-    private var startTime: Long = 0
+    private val quizQuestions = listOf(
+        Question("B _ E", listOf("R", "L", "E"), 2, R.drawable.bee),
+        Question("H E A _", listOf("H", "D", "S"), 1, R.drawable.head),
+        Question("G _ L D", listOf("E", "O", "S"), 1, R.drawable.gold),
+        Question("S O I _", listOf("O", "P", "L"), 2, R.drawable.soil),
+        Question("W A _ E R", listOf("T", "I", "O"), 0, R.drawable.water)
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = QuizScience2Binding.inflate(layoutInflater)
-        setContentView(binding.root)
+        setContentView(R.layout.quiz_science_1)
 
-        score = intent.getIntExtra("CURRENT_SCORE", 0)
-        totalElapsedTime = intent.getLongExtra("TOTAL_TIME", 0L)
-        previousQuestionsCompleted = intent.getIntExtra("QUESTIONS_COMPLETED", 0)
+        // Binding variables to XML IDs
+        tvWordDisplay = findViewById(R.id.tvWordDisplay)
+        ivHintImage = findViewById(R.id.ivHintImage)
+        buttons = listOf(
+            findViewById(R.id.btnOption1),
+            findViewById(R.id.btnOption2),
+            findViewById(R.id.btnOption3)
+        )
 
-        totalQuestion()
+        loadQuestion()
+    }
 
-        displayQuestion()
-
-        binding.option1Button.setOnClickListener {
-            checkAnswer(0)
+    private fun loadQuestion() {
+        if (currentQuestionIndex >= quizQuestions.size) {
+            // GO TO SCORE PAGE HERE
+            return
         }
-        binding.option2Button.setOnClickListener {
-            checkAnswer(1)
-        }
-        binding.option3Button.setOnClickListener {
-            checkAnswer(2)
-        }
-    }
 
-    private fun startContinuousStopwatch() {
-        // Start from the elapsed time passed from previous quiz
-        startTime = SystemClock.elapsedRealtime() - totalElapsedTime
+        val question = quizQuestions[currentQuestionIndex]
+        tvWordDisplay.text = question.displayWord
+        ivHintImage.setImageResource(question.imageResId)
 
-        // Cancel any existing timer
-        timer?.cancel()
-
-        // Create and start a continuous timer
-        timer = object : CountDownTimer(Long.MAX_VALUE, 10) {
-            override fun onTick(millisUntilFinished: Long) {
-                totalElapsedTime = SystemClock.elapsedRealtime() - startTime
-                updateTimerText()
-            }
-
-            override fun onFinish() {
-                // This won't be called
-            }
-        }.start()
-
-        isTimerRunning = true
-    }
-
-    private fun updateTimerText() {
-        val totalSeconds = (totalElapsedTime / 1000).toInt()
-        val minutes = totalSeconds / 60
-        val seconds = totalSeconds % 60
-        val milliseconds = (totalElapsedTime % 1000).toInt()
-
-        binding.timerText.text = String.format("%d:%02d", minutes, seconds)
-    }
-
-    private fun pauseStopwatch() {
-        timer?.cancel()
-        isTimerRunning = false
-    }
-
-    private fun resumeStopwatch() {
-        if (!isTimerRunning) {
-            startTime = SystemClock.elapsedRealtime() - totalElapsedTime
-
-            timer = object : CountDownTimer(Long.MAX_VALUE, 10) {
-                override fun onTick(millisUntilFinished: Long) {
-                    totalElapsedTime = SystemClock.elapsedRealtime() - startTime
-                    updateTimerText()
-                }
-
-                override fun onFinish() {
-                    // This won't be called
-                }
-            }.start()
-
-            isTimerRunning = true
+        // Reset buttons for new question
+        for (i in buttons.indices) {
+            buttons[i].text = question.options[i]
+            buttons[i].setBackgroundColor(Color.parseColor("#C2C2FF"))
+            buttons[i].isEnabled = true
+            buttons[i].setOnClickListener { checkAnswer(i) }
         }
     }
 
-    private fun stopStopwatch() {
-        timer?.cancel()
-        isTimerRunning = false
-        totalElapsedTime = SystemClock.elapsedRealtime() - startTime
-    }
+    private fun checkAnswer(selectedIndex: Int) {
+        val question = quizQuestions[currentQuestionIndex]
 
-    private fun totalQuestion() {
-        // Current question number = completed from previous quiz + current index + 1
-        val currentNumber = previousQuestionsCompleted + currentQuestionIndex + 1
+        // Disable all buttons so user can't click twice
+        buttons.forEach { it.isEnabled = false }
 
-        // Total questions = previous quiz questions + current quiz questions
-        val totalNumber = previousQuestionsCompleted + questions.size
-
-        binding.totalQuestion.text = "$currentNumber / $totalNumber"
-    }
-
-
-
-    private fun correctButtonColors(buttonIndex: Int) {
-        val greenTint = ColorStateList.valueOf(Color.parseColor("#61E547"))
-        when(buttonIndex) {
-            0 -> binding.option1Button.backgroundTintList = greenTint
-            1 -> binding.option2Button.backgroundTintList = greenTint
-            2 -> binding.option3Button.backgroundTintList = greenTint
-        }
-    }
-
-    private fun wrongButtonColors(correctAnswerIndex: Int) {
-        val redTint = ColorStateList.valueOf(Color.parseColor("#FF4A4C"))
-
-        for (i in 0..3) {
-            if (i != correctAnswerIndex) {
-                when(i) {
-                    0 -> binding.option1Button.backgroundTintList = redTint
-                    1 -> binding.option2Button.backgroundTintList = redTint
-                    2 -> binding.option3Button.backgroundTintList = redTint
-                }
-            }
-        }
-    }
-
-    private fun resetButtonColors() {
-        val defaultTint = ColorStateList.valueOf(Color.parseColor("#AEB8FE"))
-        binding.option1Button.backgroundTintList = defaultTint
-        binding.option2Button.backgroundTintList = defaultTint
-        binding.option3Button.backgroundTintList = defaultTint
-    }
-
-    private fun displayQuestion() {
-        totalQuestion()
-        resumeStopwatch()
-
-        binding.questionText.text = questions[currentQuestionIndex]
-        binding.option1Button.text = options[currentQuestionIndex][0]
-        binding.option2Button.text = options[currentQuestionIndex][1]
-        binding.option3Button.text = options[currentQuestionIndex][2]
-
-        binding.imageView.setImageResource(photos[currentQuestionIndex])
-
-        resetButtonColors()
-        setOptionButtonsEnabled(true)
-    }
-
-    private fun checkAnswer(selectedAnswerIndex: Int) {
-        setOptionButtonsEnabled(false)
-
-        val correctAnswerIndex = correctAnswers[currentQuestionIndex]
-
-        if (selectedAnswerIndex == correctAnswerIndex) {
-            score++
-            correctButtonColors(selectedAnswerIndex)
+        if (selectedIndex == question.correctAnswerIndex) {
+            // Correct -> Green
+            buttons[selectedIndex].setBackgroundColor(Color.GREEN)
         } else {
-            wrongButtonColors(correctAnswerIndex)
-            correctButtonColors(correctAnswerIndex)
+            // Wrong -> Red, and show the Correct one in Green
+            buttons[selectedIndex].setBackgroundColor(Color.RED)
+            buttons[question.correctAnswerIndex].setBackgroundColor(Color.GREEN)
         }
 
-        if (currentQuestionIndex < questions.size - 1) {
+        // Timer: Wait 1.5 seconds before moving to next question
+        Handler(Looper.getMainLooper()).postDelayed({
             currentQuestionIndex++
-            binding.questionText.postDelayed({
-                displayQuestion()
-            }, 1000)
-        } else {
-            stopStopwatch()
-            showResults()
-        }
-    }
-
-    private fun showResults() {
-        val totalQuestionCount = questions.size + 3
-        Toast.makeText(this, "Quiz Finished! Your score: $score / $totalQuestionCount", Toast.LENGTH_LONG).show()
-    }
-
-    private fun setOptionButtonsEnabled(enabled: Boolean) {
-        binding.option1Button.isEnabled = enabled
-        binding.option2Button.isEnabled = enabled
-        binding.option3Button.isEnabled = enabled
+            loadQuestion()
+        }, 1500)
     }
 }
