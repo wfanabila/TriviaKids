@@ -18,10 +18,10 @@
 
     <ImageView
         android:id="@+id/imgLogo"
-        android:layout_width="217dp"
-        android:layout_height="199dp"
+        android:layout_width="205dp"
+        android:layout_height="183dp"
         android:layout_marginTop="4dp"
-        android:src="@drawable/newlogo"
+        android:src="@drawable/LatestLogo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btnClose" />
@@ -63,10 +63,11 @@
             <EditText
                 android:id="@+id/etUsername"
                 android:layout_width="match_parent"
-                android:layout_height="45dp"
+                android:layout_height="50dp"
                 android:layout_marginTop="6dp"
                 android:layout_marginBottom="12dp"
                 android:background="@drawable/edit_text_rounded_corner"
+                android:hint="  Enter Username"
                 android:inputType="textPersonName" />
 
             <!-- Username -->
@@ -80,10 +81,11 @@
             <EditText
                 android:id="@+id/etEmail"
                 android:layout_width="match_parent"
-                android:layout_height="45dp"
+                android:layout_height="50dp"
                 android:layout_marginTop="6dp"
                 android:layout_marginBottom="12dp"
                 android:background="@drawable/edit_text_rounded_corner"
+                android:hint="  Enter Email"
                 android:inputType="textPersonName" />
             <!-- Password -->
 
@@ -98,10 +100,11 @@
             <EditText
                 android:id="@+id/etPassword"
                 android:layout_width="match_parent"
-                android:layout_height="45dp"
+                android:layout_height="50dp"
                 android:layout_marginTop="6dp"
                 android:layout_marginBottom="12dp"
                 android:background="@drawable/edit_text_rounded_corner"
+                android:hint="  Enter Password"
                 android:inputType="textPersonName" />
 
             <TextView
@@ -114,15 +117,16 @@
             <EditText
 
                 android:layout_width="match_parent"
-                android:layout_height="45dp"
+                android:layout_height="50dp"
                 android:layout_marginTop="6dp"
                 android:layout_marginBottom="20dp"
                 android:background="@drawable/edit_text_rounded_corner"
+                android:hint="  Confirm Your Password"
                 android:inputType="textPassword" />
 
             <!-- Login Button -->
             <Button
-                android:id="@+id/btnLogin"
+                android:id="@+id/btnSignUp"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:backgroundTint="#7C8CFB"

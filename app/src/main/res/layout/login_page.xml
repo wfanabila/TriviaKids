@@ -22,7 +22,7 @@
         android:layout_marginBottom="16dp"
         android:contentDescription="@string/profile_picture"
         android:scaleType="fitCenter"
-        android:src="@drawable/newlogo" />
+        android:src="@drawable/LatestLogo" />
 
     <androidx.cardview.widget.CardView
         android:layout_width="380dp"
@@ -36,7 +36,7 @@
 
         <LinearLayout
             android:layout_width="359dp"
-            android:layout_height="335dp"
+            android:layout_height="349dp"
             android:orientation="vertical"
             android:padding="20dp">
 
@@ -61,11 +61,13 @@
             <EditText
                 android:id="@+id/etUsername"
                 android:layout_width="match_parent"
-                android:layout_height="45dp"
+                android:layout_height="50dp"
                 android:layout_marginTop="6dp"
-                android:layout_marginBottom="12dp"
+                android:hint="  Enter Username"
+                android:layout_marginBottom="20dp"
                 android:background="@drawable/edit_text_rounded_corner"
-                android:inputType="textPersonName" />
+                android:inputType="text"
+                />
 
             <!-- Password -->
             <TextView
@@ -78,8 +80,9 @@
             <EditText
                 android:id="@+id/etPassword"
                 android:layout_width="match_parent"
-                android:layout_height="45dp"
+                android:layout_height="50dp"
                 android:layout_marginTop="6dp"
+                android:hint="  Enter Password"
                 android:layout_marginBottom="20dp"
                 android:background="@drawable/edit_text_rounded_corner"
                 android:inputType="textPassword" />
@@ -88,7 +91,7 @@
             <Button
                 android:id="@+id/btnLogin"
                 android:layout_width="317dp"
-                android:layout_height="62dp"
+                android:layout_height="wrap_content"
                 android:backgroundTint="#7C8CFB"
                 android:text="LOGIN"
                 android:textColor="@android:color/white"
