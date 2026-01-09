@@ -8,7 +8,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
-// Renamed to LoginPage to avoid the Redeclaration error
 class LoginPage : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,10 +21,10 @@ class LoginPage : AppCompatActivity() {
         val tvSignUpLink = findViewById<TextView>(R.id.tvSignUpLink)
 
         // 2. Open SignupActivity when "Sign up" is clicked
-        tvSignUpLink.setOnClickListener {
-            val intent = Intent(this, SignupActivity::class.java)
-            startActivity(intent)
-        }
+//        tvSignUpLink.setOnClickListener {
+//            val intent = Intent(this, SignupActivity::class.java)
+//            startActivity(intent)
+//        }
 
         // 3. Login Button Logic
         btnLogin.setOnClickListener {

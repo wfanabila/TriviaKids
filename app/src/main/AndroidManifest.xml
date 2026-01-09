@@ -11,10 +11,25 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.QuizApp">
+
         <activity
             android:name=".MainActivity"
-            android:exported="false"
-            android:theme="@style/Theme.QuizApp" />
+            android:exported="true"
+            android:theme="@style/Theme.QuizApp" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".LoginPage"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
 
         <activity
             android:name=".HomePage"
@@ -69,15 +84,6 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-
-<!--        <activity-->
-<!--            android:name=".QuizEnglishFC"-->
-<!--            android:exported="false">-->
-<!--            <action android:name="android.intent.action.MAIN"/>-->
-<!--            <category android:name="android.intent.category.LAUNCHER"/>-->
-<!--        </activity>-->
-
-
 
         <activity
             android:name=".QuizScience"
