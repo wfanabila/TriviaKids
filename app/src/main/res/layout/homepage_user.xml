@@ -89,7 +89,7 @@
                 android:id="@+id/characterImg"
                 android:layout_width="184dp"
                 android:layout_height="166dp"
-                android:src="@drawable/Cartoon_Book"
+                android:src="@drawable/cartoon_book"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>

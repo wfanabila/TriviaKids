@@ -22,7 +22,7 @@
         android:layout_marginBottom="16dp"
         android:contentDescription="@string/profile_picture"
         android:scaleType="fitCenter"
-        android:src="@drawable/newlogoTK" />
+        android:src="@drawable/newlogo" />
 
     <androidx.cardview.widget.CardView
         android:layout_width="380dp"

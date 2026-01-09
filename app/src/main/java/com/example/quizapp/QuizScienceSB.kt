@@ -1,3 +1,4 @@
+package com.example.quizapp
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
@@ -6,6 +7,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.example.quizapp.R as res // This lets you use 'res' instead of 'R'
 
 // 1. Data model for the handshake
 data class Question(
@@ -15,7 +17,7 @@ data class Question(
     val imageResId: Int
 )
 
-class QuizActivity : AppCompatActivity() {
+class QuizScienceSB : AppCompatActivity() {
 
     private lateinit var tvWordDisplay: TextView
     private lateinit var ivHintImage: ImageView
@@ -23,24 +25,24 @@ class QuizActivity : AppCompatActivity() {
 
     private var currentQuestionIndex = 0
     private val quizQuestions = listOf(
-        Question("B _ E", listOf("R", "L", "E"), 2, R.drawable.bee),
-        Question("H E A _", listOf("H", "D", "S"), 1, R.drawable.head),
-        Question("G _ L D", listOf("E", "O", "S"), 1, R.drawable.gold),
-        Question("S O I _", listOf("O", "P", "L"), 2, R.drawable.soil),
-        Question("W A _ E R", listOf("T", "I", "O"), 0, R.drawable.water)
+        Question("B _ E", listOf("R", "L", "E"), 2, res.drawable.bee),
+        Question("H E A _", listOf("H", "D", "S"), 1, res.drawable.head),
+        Question("G _ L D", listOf("E", "O", "S"), 1, res.drawable.gold),
+        Question("S O I _", listOf("O", "P", "L"), 2, res.drawable.soil),
+        Question("W A _ E R", listOf("T", "I", "O"), 0, res.drawable.water)
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.quiz_science_1)
+        setContentView(res.layout.quiz_science_1)
 
         // Binding variables to XML IDs
-        tvWordDisplay = findViewById(R.id.tvWordDisplay)
-        ivHintImage = findViewById(R.id.ivHintImage)
+        tvWordDisplay = findViewById(res.id.tvWordDisplay)
+        ivHintImage = findViewById(res.id.ivHintImage)
         buttons = listOf(
-            findViewById(R.id.btnOption1),
-            findViewById(R.id.btnOption2),
-            findViewById(R.id.btnOption3)
+            findViewById(res.id.btnOption1),
+            findViewById(res.id.btnOption2),
+            findViewById(res.id.btnOption3)
         )
 
         loadQuestion()
