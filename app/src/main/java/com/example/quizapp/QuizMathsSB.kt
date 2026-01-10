@@ -1,5 +1,6 @@
 package com.example.quizapp
 
+import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
@@ -202,8 +203,22 @@ class QuizMathsSB : AppCompatActivity() {
     }
 
     private fun showResults() {
-        val totalQuestionCount = questions.size + 3
-        Toast.makeText(this, "Quiz Finished! Your score: $score / $totalQuestionCount", Toast.LENGTH_LONG).show()
+        val totalQuestionCount = questions.size + previousQuestionsCompleted // Total questions for this and previous quiz
+
+        // send data to score after game page
+        val intent = Intent(this, ScoreAfterGame::class.java).apply {
+            putExtra(ScoreAfterGame.EXTRA_SCORE, score)
+            putExtra(ScoreAfterGame.EXTRA_TOTAL_QUESTIONS, totalQuestionCount)
+            putExtra(ScoreAfterGame.EXTRA_TOTAL_TIME, totalElapsedTime)
+            putExtra(ScoreAfterGame.EXTRA_QUIZ_TYPE, "Maths") // play again based on prev subject
+
+            // next button ( will bring to homepage )
+            putExtra(ScoreAfterGame.EXTRA_PLAY_AGAIN_ACTIVITY, QuizEnglishSB::class.java.name)
+            putExtra(ScoreAfterGame.EXTRA_NEXT_GAME_ACTIVITY, QuizMaths::class.java.name) // Change this as per your next quiz activity
+        }
+
+        startActivity(intent)
+        finish()
     }
 
     private fun setOptionButtonsEnabled(enabled: Boolean) {
