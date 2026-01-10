@@ -4,112 +4,125 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
+    android:background="@drawable/bg"
     android:orientation="vertical"
     android:gravity="center_horizontal"
     android:padding="16dp"
-    tools:context=".MainActivity">
-
-    <!-- LOGO AT TOP -->
-
-    <!-- CARD -->
+    tools:context=".LoginPage">
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="300dp"
-        android:layout_height="260dp"
+        android:layout_width="240dp"
+        android:layout_height="212dp"
         android:layout_marginTop="32dp"
         android:layout_marginBottom="16dp"
-        android:contentDescription="@string/profile_picture"
         android:scaleType="fitCenter"
-        android:src="@drawable/logo" />
+        android:src="@drawable/logotrivia" />
 
     <androidx.cardview.widget.CardView
-        android:layout_width="380dp"
-        android:layout_height="334dp"
+        android:layout_width="wrap_content"
+        android:layout_height="381dp"
         android:layout_gravity="center"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         app:cardBackgroundColor="@android:color/white"
         app:cardCornerRadius="20dp"
         app:cardElevation="5dp"
         app:cardUseCompatPadding="true">
 
         <LinearLayout
-            android:layout_width="359dp"
-            android:layout_height="335dp"
+            android:layout_width="354dp"
+            android:layout_height="369dp"
             android:orientation="vertical"
             android:padding="20dp">
 
-            <!-- Title -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="12dp"
                 android:text="Login to your Account :"
                 android:textColor="#000000"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
-            <!-- Username -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Username :"
+                android:text="Username:"
                 android:textColor="#000000"
                 android:textSize="13sp" />
 
             <EditText
                 android:id="@+id/etUsername"
                 android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:layout_marginTop="6dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="4dp"
                 android:layout_marginBottom="12dp"
                 android:background="@drawable/edit_text_rounded_corner"
-                android:inputType="textPersonName" />
+                android:hint="  Enter Username"
+                android:inputType="text" />
 
-            <!-- Password -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Password :"
+                android:text="Password:"
                 android:textColor="#000000"
                 android:textSize="13sp" />
 
             <EditText
                 android:id="@+id/etPassword"
                 android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:layout_marginTop="6dp"
-                android:layout_marginBottom="20dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="16dp"
                 android:background="@drawable/edit_text_rounded_corner"
+                android:hint="  Enter Password"
                 android:inputType="textPassword" />
 
-            <!-- Login Button -->
             <Button
                 android:id="@+id/btnLogin"
-                android:layout_width="317dp"
-                android:layout_height="62dp"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
                 android:backgroundTint="#7C8CFB"
                 android:text="LOGIN"
                 android:textColor="@android:color/white"
+                android:textSize="18sp"
                 android:textStyle="bold" />
 
+            <LinearLayout
+                android:id="@+id/btnGoogleLogin"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/google_button_bg"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/googlelogo" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Login with Google"
+                    android:textColor="#555555"
+                    android:textStyle="bold" />
+            </LinearLayout>
         </LinearLayout>
-
-
     </androidx.cardview.widget.CardView>
 
     <TextView
         android:id="@+id/tvSignUpLink"
-        android:layout_width="234dp"
-        android:layout_height="74dp"
-        android:background="?attr/selectableItemBackground"
-        android:clickable="true"
-        android:focusable="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
         android:padding="8dp"
         android:text="Doesn't have an account? Sign up"
-        android:textColor="#000000" />
-
+        android:textColor="#00008B" />
 
 </LinearLayout>
-
