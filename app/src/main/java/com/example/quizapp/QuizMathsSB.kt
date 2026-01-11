@@ -202,6 +202,7 @@ class QuizMathsSB : AppCompatActivity() {
         }
     }
 
+    // score after game
     private fun showResults() {
         val totalQuestionCount = questions.size + previousQuestionsCompleted // Total questions for this and previous quiz
 

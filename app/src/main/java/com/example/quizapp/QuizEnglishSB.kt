@@ -205,19 +205,21 @@ class QuizEnglishSB : AppCompatActivity() {
         }
     }
 
+    // score after game
     private fun showResults() {
-        val totalQuestionCount = questions.size + previousQuestionsCompleted // Total questions for this and previous quiz
+
+        val totalQuestionCount = questions.size + previousQuestionsCompleted
 
         // send data to score after game page
         val intent = Intent(this, ScoreAfterGame::class.java).apply {
-            putExtra(ScoreAfterGame.EXTRA_SCORE, score)
+            putExtra(ScoreAfterGame.EXTRA_SCORE, score)  // Pass the current score
             putExtra(ScoreAfterGame.EXTRA_TOTAL_QUESTIONS, totalQuestionCount)
             putExtra(ScoreAfterGame.EXTRA_TOTAL_TIME, totalElapsedTime)
-            putExtra(ScoreAfterGame.EXTRA_QUIZ_TYPE, "English") // play again based on prev subject
+            putExtra(ScoreAfterGame.EXTRA_QUIZ_TYPE, "English")
 
             // next button ( will bring to homepage )
             putExtra(ScoreAfterGame.EXTRA_PLAY_AGAIN_ACTIVITY, QuizEnglishSB::class.java.name)
-            putExtra(ScoreAfterGame.EXTRA_NEXT_GAME_ACTIVITY, QuizMaths::class.java.name) // Change this as per your next quiz activity
+            putExtra(ScoreAfterGame.EXTRA_NEXT_GAME_ACTIVITY, QuizMaths::class.java.name)
         }
 
         startActivity(intent)

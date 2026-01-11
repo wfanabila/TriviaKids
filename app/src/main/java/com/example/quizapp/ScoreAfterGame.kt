@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.quizapp.databinding.ScoreAfterGameBinding
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlin.math.roundToInt
 
 class ScoreAfterGame : AppCompatActivity() {
@@ -22,8 +23,11 @@ class ScoreAfterGame : AppCompatActivity() {
         val totalTime = intent.getLongExtra(EXTRA_TOTAL_TIME, 0L)
         val quizType = intent.getStringExtra(EXTRA_QUIZ_TYPE)
 
-        // show score .
-        binding.scoreText.text = "$score/$total"
+        // show score
+        //Toast.makeText(this, "Score: $score, Total Questions: $total", Toast.LENGTH_SHORT).show()
+
+        // Display score on the UI
+        binding.scoreText.text = "$score / $total"
 
         binding.closeButton.setOnClickListener { finish() }
 
@@ -32,28 +36,30 @@ class ScoreAfterGame : AppCompatActivity() {
             when (quizType) {
                 "English" -> launchActivity(QuizEnglish::class.java)
                 "Maths" -> launchActivity(QuizMaths::class.java)
-                "Science" -> launchActivity(QuizScience::class.java)
+//                "Science" -> launchActivity(QuizScience::class.java)
                 else -> Toast.makeText(this, "Invalid quiz type", Toast.LENGTH_SHORT).show()
             }
         }
 
         // navigate to homepage ( next button )
         binding.save.setOnClickListener {
-            launchActivity(HomePage::class.java)  // Navigate to HomePage
+            launchActivity(HomePage::class.java)
         }
 
-        binding.bottomNav.setOnItemSelectedListener { item ->
+        val bottomNav: BottomNavigationView = findViewById(com.example.quizapp.R.id.bottom_nav) // Use the correct package reference
+        bottomNav.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
-                R.id.home -> {
-                    startActivity(Intent(this, HomePage::class.java))
+                com.example.quizapp.R.id.home -> {
+                    val intent = Intent(this, HomePage::class.java)
+                    startActivity(intent)
                     true
                 }
-                R.id.profile -> {
-                    startActivity(Intent(this, ProfileActivity::class.java))
+                com.example.quizapp.R.id.profile -> {
+                    navigateToProfileActivity()
                     true
                 }
-                R.id.setting -> {
-                    startActivity(Intent(this, EditProfile::class.java))
+                com.example.quizapp.R.id.setting -> {
+                    navigateToEditProfile()
                     true
                 }
                 else -> false
@@ -74,6 +80,16 @@ class ScoreAfterGame : AppCompatActivity() {
         const val EXTRA_PLAY_AGAIN_ACTIVITY = "EXTRA_PLAY_AGAIN_ACTIVITY"
         const val EXTRA_NEXT_GAME_ACTIVITY = "EXTRA_NEXT_GAME_ACTIVITY"
         const val EXTRA_QUIZ_TYPE = "EXTRA_QUIZ_TYPE"
+    }
+
+    private fun navigateToProfileActivity() {
+        val intent = Intent(this, ProfileActivity::class.java)
+        startActivity(intent)
+    }
+
+    private fun navigateToEditProfile() {
+        val intent = Intent(this, EditProfile::class.java)
+        startActivity(intent)
     }
 
 }
