@@ -34,6 +34,9 @@ class EditProfile : AppCompatActivity() {
         binding = EditProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val bottomNav: BottomNavigationView = findViewById(R.id.bottom_nav)
+        bottomNav.selectedItemId = R.id.setting
+
         loadCurrentProfileData() // load current profile data from SharedPreferences ~~
 
         binding.buttonEditAvatar.setOnClickListener {
@@ -49,21 +52,18 @@ class EditProfile : AppCompatActivity() {
             showDiscardDialog()
         }
 
-
-        val bottomNav: BottomNavigationView = findViewById(com.example.quizapp.R.id.bottom_nav)
-        bottomNav.setOnNavigationItemSelectedListener { item ->
+        // nav bar
+        bottomNav.setOnItemSelectedListener { item ->
             when (item.itemId) {
-                com.example.quizapp.R.id.home -> {
-                    val intent = Intent(this, HomePage::class.java)
-                    startActivity(intent)
+                R.id.home -> {
+                    navigateToHomePage()
                     true
                 }
-                com.example.quizapp.R.id.profile -> {
+                R.id.profile -> {
                     navigateToProfileActivity()
                     true
                 }
-                com.example.quizapp.R.id.setting -> {
-                    navigateToEditProfile()
+                R.id.setting -> {
                     true
                 }
                 else -> false
@@ -123,8 +123,8 @@ class EditProfile : AppCompatActivity() {
         startActivity(intent)
     }
 
-    private fun navigateToEditProfile() {
-        val intent = Intent(this, EditProfile::class.java)
+    private fun navigateToHomePage() {
+        val intent = Intent(this, HomePage::class.java)
         startActivity(intent)
     }
 }

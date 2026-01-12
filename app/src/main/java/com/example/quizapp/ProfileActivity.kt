@@ -34,6 +34,9 @@ class ProfileActivity : AppCompatActivity() {
         binding = ActivityProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val bottomNav: BottomNavigationView = findViewById(R.id.bottom_nav)
+        bottomNav.selectedItemId = R.id.profile
+
         loadProfileFromPrefs()
 
         binding.setting.setOnClickListener { navigateToEditProfile() }
@@ -41,7 +44,7 @@ class ProfileActivity : AppCompatActivity() {
         binding.nextIcon1.setOnClickListener { navigateToEditProfile() }
         binding.nextIcon2.setOnClickListener { navigateToEditProfile() }
 
-        // score popup
+        // eng score
         binding.engTotalScore.setOnClickListener {
             showScorePopup(
                 subject = "ENGLISH",
@@ -51,6 +54,7 @@ class ProfileActivity : AppCompatActivity() {
             )
         }
 
+        // math score
         binding.mathTotalScore.setOnClickListener {
             showScorePopup(
                 subject = "MATHEMATICS",
@@ -60,12 +64,13 @@ class ProfileActivity : AppCompatActivity() {
             )
         }
 
+        // scn score
         binding.scnTotalScore.setOnClickListener {
             showScorePopup(
                 subject = "SCIENCE",
                 total = binding.scnTotalLabel.text.toString(),
-                best = "6",
-                fastest = "03:07"
+                best = "6", // Fetch dynamic data as needed
+                fastest = "03:07" // Fetch dynamic data as needed
             )
         }
 
@@ -74,16 +79,14 @@ class ProfileActivity : AppCompatActivity() {
             showProfilePopup(ProfilePrefs.getAvatar(this))
         }
 
-        val bottomNav: BottomNavigationView = findViewById(R.id.bottom_nav)
-        bottomNav.setOnNavigationItemSelectedListener { item ->
+        // nav bar
+        bottomNav.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.home -> {
-                    val intent = Intent(this, HomePage::class.java)
-                    startActivity(intent)
+                    navigateToHomePage()
                     true
                 }
                 R.id.profile -> {
-                    // stay in profile page.
                     true
                 }
                 R.id.setting -> {
@@ -93,7 +96,6 @@ class ProfileActivity : AppCompatActivity() {
                 else -> false
             }
         }
-
     }
 
     private fun loadProfileFromPrefs() {
@@ -102,20 +104,14 @@ class ProfileActivity : AppCompatActivity() {
         binding.imageView.setImageResource(ProfilePrefs.getAvatar(this))
     }
 
-    private fun navigateToEditProfile() {
-        val intent = Intent(this, EditProfile::class.java)
-        editProfileLauncher.launch(intent)
-    }
-
-
     // pop up score
-    private fun showScorePopup(
-        subject: String,
-        total: String,
-        best: String,
-        fastest: String
-    ) {
-        val dialogView = layoutInflater.inflate(R.layout.dialog_score_details, null)
+    private fun showScorePopup(subject: String, total: String, best: String, fastest: String) {
+        val dialogView = when (subject) {
+            "ENGLISH" -> layoutInflater.inflate(R.layout.dialog_eng_score_details, null)
+            "MATHEMATICS" -> layoutInflater.inflate(R.layout.dialog_math_score_details, null)
+            "SCIENCE" -> layoutInflater.inflate(R.layout.dialog_scn_score_details, null)
+            else -> layoutInflater.inflate(R.layout.dialog_eng_score_details, null) // Default case
+        }
 
         val titleTv = dialogView.findViewById<TextView>(R.id.dialogTitle)
         val totalTv = dialogView.findViewById<TextView>(R.id.dialogTotal)
@@ -141,7 +137,6 @@ class ProfileActivity : AppCompatActivity() {
         dialogView.setOnClickListener { dialog.dismiss() }
     }
 
-
     // view pfp
     private fun showProfilePopup(avatarResId: Int) {
         val dialogView = layoutInflater.inflate(R.layout.view_profile_pic, null)
@@ -161,6 +156,17 @@ class ProfileActivity : AppCompatActivity() {
         img.setOnClickListener { dialog.dismiss() }
 
         dialogView.setOnClickListener { dialog.dismiss() }
+    }
+
+
+    private fun navigateToEditProfile() {
+        val intent = Intent(this, EditProfile::class.java)
+        editProfileLauncher.launch(intent)
+    }
+
+    private fun navigateToHomePage() {
+        val intent = Intent(this, HomePage::class.java)
+        startActivity(intent)
     }
 
 }

@@ -17,16 +17,16 @@ class ScoreAfterGame : AppCompatActivity() {
         binding = ScoreAfterGameBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val bottomNav: BottomNavigationView = findViewById(com.example.quizapp.R.id.bottom_nav)
+        bottomNav.selectedItemId = com.example.quizapp.R.id.home
+
         // read data from quiz
         val score = intent.getIntExtra(EXTRA_SCORE, 0)
         val total = intent.getIntExtra(EXTRA_TOTAL_QUESTIONS, 0)
         val totalTime = intent.getLongExtra(EXTRA_TOTAL_TIME, 0L)
         val quizType = intent.getStringExtra(EXTRA_QUIZ_TYPE)
 
-        // show score
-        //Toast.makeText(this, "Score: $score, Total Questions: $total", Toast.LENGTH_SHORT).show()
-
-        // Display score on the UI
+        // display score
         binding.scoreText.text = "$score / $total"
 
         binding.closeButton.setOnClickListener { finish() }
@@ -46,12 +46,10 @@ class ScoreAfterGame : AppCompatActivity() {
             launchActivity(HomePage::class.java)
         }
 
-        val bottomNav: BottomNavigationView = findViewById(com.example.quizapp.R.id.bottom_nav) // Use the correct package reference
-        bottomNav.setOnNavigationItemSelectedListener { item ->
+        // nav bar
+        bottomNav.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 com.example.quizapp.R.id.home -> {
-                    val intent = Intent(this, HomePage::class.java)
-                    startActivity(intent)
                     true
                 }
                 com.example.quizapp.R.id.profile -> {

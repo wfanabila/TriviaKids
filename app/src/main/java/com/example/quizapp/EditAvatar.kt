@@ -18,6 +18,9 @@ class EditAvatar : AppCompatActivity() {
         binding = EditAvatarBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val bottomNav: BottomNavigationView = findViewById(R.id.bottom_nav)
+        bottomNav.selectedItemId = R.id.setting
+
         // show current avatar ~~
         val currentAvatar = ProfilePrefs.getAvatar(this)
         binding.imageView.setImageResource(currentAvatar)
@@ -31,20 +34,18 @@ class EditAvatar : AppCompatActivity() {
             showDiscardDialog()
         }
 
-        val bottomNav: BottomNavigationView = findViewById(com.example.quizapp.R.id.bottom_nav)
-        bottomNav.setOnNavigationItemSelectedListener { item ->
+        // nav bar
+        bottomNav.setOnItemSelectedListener { item ->
             when (item.itemId) {
-                com.example.quizapp.R.id.home -> {
-                    val intent = Intent(this, HomePage::class.java)
-                    startActivity(intent)
+                R.id.home -> {
+                    navigateToHomePage()
                     true
                 }
-                com.example.quizapp.R.id.profile -> {
+                R.id.profile -> {
                     navigateToProfileActivity()
                     true
                 }
-                com.example.quizapp.R.id.setting -> {
-                    navigateToEditProfile()
+                R.id.setting -> {
                     true
                 }
                 else -> false
@@ -102,8 +103,8 @@ class EditAvatar : AppCompatActivity() {
         startActivity(intent)
     }
 
-    private fun navigateToEditProfile() {
-        val intent = Intent(this, EditProfile::class.java)
+    private fun navigateToHomePage() {
+        val intent = Intent(this, HomePage::class.java)
         startActivity(intent)
     }
 }

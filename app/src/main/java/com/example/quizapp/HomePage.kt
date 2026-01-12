@@ -1,6 +1,5 @@
 package com.example.quizapp
 
-import android.R
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -14,6 +13,9 @@ class HomePage : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = HomepageBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val bottomNav: BottomNavigationView = findViewById(com.example.quizapp.R.id.bottom_nav)
+        bottomNav.selectedItemId = com.example.quizapp.R.id.home
 
         binding.button1.setOnClickListener {
             val intent = Intent(this, QuizEnglish::class.java)
@@ -30,13 +32,10 @@ class HomePage : AppCompatActivity() {
              startActivity(intent)
         }
 
-
-        val bottomNav: BottomNavigationView = findViewById(com.example.quizapp.R.id.bottom_nav) // Use the correct package reference
-        bottomNav.setOnNavigationItemSelectedListener { item ->
+        // nav bar
+        bottomNav.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 com.example.quizapp.R.id.home -> {
-                    val intent = Intent(this, HomePage::class.java)
-                    startActivity(intent)
                     true
                 }
                 com.example.quizapp.R.id.profile -> {
