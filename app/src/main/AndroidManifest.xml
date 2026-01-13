@@ -31,6 +31,10 @@
             android:exported="true" />
 
         <activity
+            android:name=".signup_page"
+            android:exported="true" />
+
+        <activity
             android:name=".HomePage"
             android:exported="true" />
 

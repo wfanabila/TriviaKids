@@ -1,40 +1,51 @@
 package com.example.quizapp
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
-class SignupActivity : AppCompatActivity() {
+class signup_page : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // 1. Matches your XML file name: signup_page.xml
         setContentView(R.layout.signup_page)
 
-        // 2. Initializing views based on the IDs in your XML
         val btnClose = findViewById<ImageView>(R.id.btnClose)
-
-        // Note: XML uses 'btnSignUp' (capital 'U'), not 'btnSignup'
         val btnSignup = findViewById<Button>(R.id.btnSignUp)
-
         val etUsername = findViewById<EditText>(R.id.etUsername)
         val etEmail = findViewById<EditText>(R.id.etEmail)
-
-        // Note: XML uses 'etPassword', not 'etCurrentPassword'
         val etPassword = findViewById<EditText>(R.id.etPassword)
 
-        // 3. Setup Click Listeners
+        // Close button: Goes back to the previous screen
         btnClose.setOnClickListener {
-            finish() // Closes the activity
+            finish()
         }
 
+        // SIGN UP button logic
         btnSignup.setOnClickListener {
-            // Add your signup logic here
             val username = etUsername.text.toString()
             val email = etEmail.text.toString()
             val password = etPassword.text.toString()
+
+            // Check if fields are empty before proceeding
+            if (username.isNotEmpty() && email.isNotEmpty() && password.isNotEmpty()) {
+
+                Toast.makeText(this, "Account Created Successfully!", Toast.LENGTH_SHORT).show()
+
+                // THIS LINKS TO LOGIN PAGE
+                val intent = Intent(this, LoginPage::class.java)
+                startActivity(intent)
+
+                // Finish this activity so the user doesn't go back to signup when pressing back
+                finish()
+
+            } else {
+                Toast.makeText(this, "Please fill in all details", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 }

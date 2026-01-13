@@ -24,7 +24,7 @@ class LoginPage : AppCompatActivity() {
 
         // 2. Open SignupActivity
         tvSignUpLink.setOnClickListener {
-            val intent = Intent(this, SignupActivity::class.java)
+            val intent = Intent(this, signup_page::class.java)
             startActivity(intent)
         }
 
@@ -38,6 +38,10 @@ class LoginPage : AppCompatActivity() {
         btnLogin.setOnClickListener {
             val username = etUsername.text.toString()
             val password = etPassword.text.toString()
+
+            // THIS LINKS TO HOME PAGE
+            val intent = Intent(this, HomePage::class.java)
+            startActivity(intent)
 
             if (username.isNotEmpty() && password.isNotEmpty()) {
                 Toast.makeText(this, "Logging in...", Toast.LENGTH_SHORT).show()
