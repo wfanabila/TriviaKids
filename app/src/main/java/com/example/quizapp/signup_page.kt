@@ -25,7 +25,7 @@ class signup_page : AppCompatActivity() {
             finish()
         }
 
-        // SIGN UP button logic
+        // sign up button
         btnSignup.setOnClickListener {
             val username = etUsername.text.toString()
             val email = etEmail.text.toString()
@@ -33,19 +33,18 @@ class signup_page : AppCompatActivity() {
 
             // Check if fields are empty before proceeding
             if (username.isNotEmpty() && email.isNotEmpty() && password.isNotEmpty()) {
+                // Save user details and set the has_account flag to true
+                ProfilePrefs.saveSignupData(this, username, email, password)
 
                 Toast.makeText(this, "Account Created Successfully!", Toast.LENGTH_SHORT).show()
 
-                // THIS LINKS TO LOGIN PAGE
-                val intent = Intent(this, LoginPage::class.java)
-                startActivity(intent)
-
-                // Finish this activity so the user doesn't go back to signup when pressing back
-                finish()
-
+                // Redirect to LoginPage after successful signup
+                startActivity(Intent(this, LoginPage::class.java))
+                finish()  // Close the Signup page
             } else {
                 Toast.makeText(this, "Please fill in all details", Toast.LENGTH_SHORT).show()
             }
         }
+
     }
 }

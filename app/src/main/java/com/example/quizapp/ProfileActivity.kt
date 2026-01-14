@@ -39,10 +39,15 @@ class ProfileActivity : AppCompatActivity() {
 
         loadProfileFromPrefs()
 
+        // setting ---> edit profile page
         binding.setting.setOnClickListener { navigateToEditProfile() }
         binding.settingLayout.setOnClickListener { navigateToEditProfile() }
         binding.nextIcon1.setOnClickListener { navigateToEditProfile() }
-        binding.nextIcon2.setOnClickListener { navigateToEditProfile() }
+
+        // logout ---> exit, login page
+        binding.logout.setOnClickListener { navigateToLogin() }
+        binding.logoutLayout.setOnClickListener { navigateToLogin() }
+        binding.nextIcon2.setOnClickListener { navigateToLogin() }
 
         // eng score
         binding.engTotalScore.setOnClickListener {
@@ -69,8 +74,8 @@ class ProfileActivity : AppCompatActivity() {
             showScorePopup(
                 subject = "SCIENCE",
                 total = binding.scnTotalLabel.text.toString(),
-                best = "6", // Fetch dynamic data as needed
-                fastest = "03:07" // Fetch dynamic data as needed
+                best = "6",
+                fastest = "03:07"
             )
         }
 
@@ -168,5 +173,13 @@ class ProfileActivity : AppCompatActivity() {
         val intent = Intent(this, HomePage::class.java)
         startActivity(intent)
     }
+
+    private fun navigateToLogin() {
+        ProfilePrefs.logout(this) // ensure the logout flag is set
+        val intent = Intent(this, LoginPage::class.java)
+        startActivity(intent)
+        finishAffinity()
+    }
+
 
 }

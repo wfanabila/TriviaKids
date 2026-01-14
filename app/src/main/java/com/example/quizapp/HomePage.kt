@@ -14,6 +14,27 @@ class HomePage : AppCompatActivity() {
         binding = HomepageBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // check if the user has logged in by checking their profile data
+        val name = ProfilePrefs.getName(this)
+        val email = ProfilePrefs.getEmail(this)
+
+        // if no valid data exists, redirect the user to the LoginPage
+        if (name == "Leehan" || email == "defaultEmail@example.com") {
+            val intent = Intent(this, LoginPage::class.java)
+            startActivity(intent)
+            finish()  // Close the HomePage after redirecting to LoginPage
+        }
+
+        if (!ProfilePrefs.isLoggedIn(this)) {
+            startActivity(Intent(this, LoginPage::class.java))
+            finish()
+            return
+        }
+
+        // continue with the HomePage setup if the user is logged in
+        setContentView(R.layout.homepage)
+
+
         val bottomNav: BottomNavigationView = findViewById(com.example.quizapp.R.id.bottom_nav)
         bottomNav.selectedItemId = com.example.quizapp.R.id.home
 

@@ -45,8 +45,57 @@ class EditProfile : AppCompatActivity() {
         }
 
         binding.save.setOnClickListener {
-            saveProfileChanges()
+            val newUsername = binding.username.text.toString().trim()
+            val newEmail = binding.email.text.toString().trim()
+            val currentPassword = binding.currPass.text.toString().trim()
+            val newPassword = binding.newPass.text.toString().trim()
+
+            // check if any field is filled. only need the current and new passwords if the user wants to change the password
+            if (newUsername.isEmpty() && newEmail.isEmpty() && currentPassword.isEmpty() && newPassword.isEmpty() && selectedAvatar == null) {
+                // if the user doesn't want to change anything, just exit
+                Toast.makeText(this, "No changes detected", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            // validate current password
+            if (currentPassword.isNotEmpty() && newPassword.isNotEmpty()) {
+                val savedPassword = ProfilePrefs.getPassword(this)
+
+                if (currentPassword != savedPassword) {
+                    // if the current password is incorrect
+                    Toast.makeText(this, "Incorrect current password. Please try again.", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+            }
+
+            // password change is requested and validated, save the new password
+            if (newPassword.isNotEmpty()) {
+                ProfilePrefs.savePassword(this, newPassword)
+            }
+
+            // Save the new username and email if they are not empty
+            if (newUsername.isNotEmpty()) {
+                ProfilePrefs.saveName(this, newUsername)
+            }
+            if (newEmail.isNotEmpty()) {
+                ProfilePrefs.saveEmail(this, newEmail)
+            }
+
+            // save selected avatar
+            selectedAvatar?.let { ProfilePrefs.saveAvatar(this, it) }
+
+            Toast.makeText(this, "Profile updated successfully!", Toast.LENGTH_SHORT).show()
+
+            // pass the updated data back to the calling activity (ProfileActivity)
+            val resultIntent = Intent().apply {
+                putExtra("newUsername", newUsername)
+                putExtra("newEmail", newEmail)
+                selectedAvatar?.let { putExtra("selectedAvatar", it) }
+            }
+            setResult(RESULT_OK, resultIntent)
+            finish()
         }
+
 
         binding.closeButton.setOnClickListener {
             showDiscardDialog()
