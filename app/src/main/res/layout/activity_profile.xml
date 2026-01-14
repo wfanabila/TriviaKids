@@ -267,7 +267,7 @@
     </LinearLayout>
 
     <androidx.cardview.widget.CardView
-        android:layout_width="380dp"
+        android:layout_width="360dp"
         android:layout_height="180dp"
         android:layout_gravity="center_horizontal"
         app:cardBackgroundColor="@android:color/white"
@@ -351,6 +351,7 @@
 
 
                 <LinearLayout
+                    android:id="@+id/logout_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
@@ -369,6 +370,7 @@
                         android:importantForAccessibility="no" />
 
                     <Button
+                        android:id="@+id/logout"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="1dp"

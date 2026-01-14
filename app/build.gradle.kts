@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -75,4 +77,23 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    // Import the Firebase BoM
+    implementation(platform("com.google.firebase:firebase-bom:34.7.0"))
+    implementation("com.google.firebase:firebase-auth:21.0.5")
+
+    // Firebase Analytics
+    implementation("com.google.firebase:firebase-analytics")
+
+    // Firebase Authentication
+    implementation("com.google.firebase:firebase-auth")
+
+    // Firebase Firestore (for saving user data)
+    implementation("com.google.firebase:firebase-firestore")
+
+    // Firebase Cloud Storage (optional, for profile pictures or other media)
+    implementation("com.google.firebase:firebase-storage")
+
+    // Google Sign-In for Firebase (optional)
+    implementation("com.google.android.gms:play-services-auth:20.3.0")
 }

@@ -8,6 +8,9 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.quizapp.databinding.EditProfileBinding
 import androidx.appcompat.app.AlertDialog // alert dialog ~~
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.EmailAuthProvider
+
 
 
 class EditProfile : AppCompatActivity() {
@@ -62,18 +65,38 @@ class EditProfile : AppCompatActivity() {
                 val savedPassword = ProfilePrefs.getPassword(this)
 
                 if (currentPassword != savedPassword) {
-                    // if the current password is incorrect
                     Toast.makeText(this, "Incorrect current password. Please try again.", Toast.LENGTH_SHORT).show()
                     return@setOnClickListener
                 }
+
+                // reauthenticate the user with the current password before updating
+                val user = FirebaseAuth.getInstance().currentUser
+                val email = user?.email
+
+                if (email != null) {
+                    val credential = EmailAuthProvider.getCredential(email, currentPassword)
+
+                    user.reauthenticate(credential).addOnCompleteListener { reAuthTask ->
+                        if (reAuthTask.isSuccessful) {
+                            // if reauthentication is successful, update the password
+                            user.updatePassword(newPassword).addOnCompleteListener { updatePasswordTask ->
+                                if (updatePasswordTask.isSuccessful) {
+                                    // save the new password to SharedPreferences
+                                    ProfilePrefs.savePassword(this, newPassword)
+                                    Toast.makeText(this, "Password updated successfully!", Toast.LENGTH_SHORT).show()
+                                } else {
+                                    Toast.makeText(this, "Failed to update password: ${updatePasswordTask.exception?.message}", Toast.LENGTH_SHORT).show()
+                                }
+                            }
+                        } else {
+                            Toast.makeText(this, "Reauthentication failed. Please try again.", Toast.LENGTH_SHORT).show()
+                            return@addOnCompleteListener
+                        }
+                    }
+                }
             }
 
-            // password change is requested and validated, save the new password
-            if (newPassword.isNotEmpty()) {
-                ProfilePrefs.savePassword(this, newPassword)
-            }
-
-            // Save the new username and email if they are not empty
+            // save the new username and email if they are not empty
             if (newUsername.isNotEmpty()) {
                 ProfilePrefs.saveName(this, newUsername)
             }

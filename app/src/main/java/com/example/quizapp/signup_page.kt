@@ -7,12 +7,19 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+
 
 class signup_page : AppCompatActivity() {
+
+    private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.signup_page)
+
+        auth = FirebaseAuth.getInstance()
 
         val btnClose = findViewById<ImageView>(R.id.btnClose)
         val btnSignup = findViewById<Button>(R.id.btnSignUp)
@@ -20,7 +27,7 @@ class signup_page : AppCompatActivity() {
         val etEmail = findViewById<EditText>(R.id.etEmail)
         val etPassword = findViewById<EditText>(R.id.etPassword)
 
-        // Close button: Goes back to the previous screen
+        // close button
         btnClose.setOnClickListener {
             finish()
         }
@@ -31,20 +38,46 @@ class signup_page : AppCompatActivity() {
             val email = etEmail.text.toString()
             val password = etPassword.text.toString()
 
-            // Check if fields are empty before proceeding
             if (username.isNotEmpty() && email.isNotEmpty() && password.isNotEmpty()) {
-                // Save user details and set the has_account flag to true
-                ProfilePrefs.saveSignupData(this, username, email, password)
+                auth.createUserWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(this) { task ->
+                        if (task.isSuccessful) {
+                            val user = auth.currentUser
+                            val uid = user?.uid ?: ""
 
-                Toast.makeText(this, "Account Created Successfully!", Toast.LENGTH_SHORT).show()
+                            // store the username and email in Firestore with the user's UID as the document ID
+                            val userData = hashMapOf(
+                                "username" to username,
+                                "email" to email
+                            )
 
-                // Redirect to LoginPage after successful signup
-                startActivity(Intent(this, LoginPage::class.java))
-                finish()  // Close the Signup page
-            } else {
-                Toast.makeText(this, "Please fill in all details", Toast.LENGTH_SHORT).show()
+                            val db = FirebaseFirestore.getInstance()
+                            db.collection("users")
+                                .document(uid)
+                                .set(userData)
+                                .addOnCompleteListener { firestoreTask ->
+                                    if (firestoreTask.isSuccessful) {
+                                        // Successfully saved to Firestore
+                                        // Save the data in SharedPreferences as well
+                                        ProfilePrefs.saveName(this, username) // Save username
+                                        ProfilePrefs.saveEmail(this, email) // Save email
+                                        ProfilePrefs.saveAvatar(this, R.drawable.pfp_ava)
+                                        ProfilePrefs.savePassword(this, password)
+
+                                        Toast.makeText(this, "Account Created Successfully!", Toast.LENGTH_SHORT).show()
+                                        startActivity(Intent(this, LoginPage::class.java))
+                                        finish()
+                                    } else {
+                                        // Error saving to Firestore
+                                        Toast.makeText(this, "Error: ${firestoreTask.exception?.message}", Toast.LENGTH_SHORT).show()
+                                    }
+                                }
+                        } else {
+                            Toast.makeText(this, "Registration failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
+                        }
+                    }
             }
         }
 
-    }
+        }
 }

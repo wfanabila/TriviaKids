@@ -104,9 +104,14 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     private fun loadProfileFromPrefs() {
-        binding.userName.text = ProfilePrefs.getName(this)
-        binding.userEmail.text = ProfilePrefs.getEmail(this)
-        binding.imageView.setImageResource(ProfilePrefs.getAvatar(this))
+        // load the data from SharedPreferences
+        val username = ProfilePrefs.getName(this)
+        val email = ProfilePrefs.getEmail(this)
+        val avatar = ProfilePrefs.getAvatar(this)
+
+        binding.userName.text = username
+        binding.userEmail.text = email
+        binding.imageView.setImageResource(avatar)
     }
 
     // pop up score

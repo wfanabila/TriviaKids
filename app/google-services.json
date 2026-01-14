@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "661122431361",
+    "project_id": "triviakidsdb",
+    "storage_bucket": "triviakidsdb.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:661122431361:android:32764eff6cd014c4a31080",
+        "android_client_info": {
+          "package_name": "com.example.quizapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDTeHJIHhAWE2cTW_HAM3vpPbYHLhocXNc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

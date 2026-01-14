@@ -42,6 +42,7 @@ object ProfilePrefs {
             .getString(KEY_EMAIL, "defaultEmail@example.com") ?: "defaultEmail@example.com"
     }
 
+    // Get saved password from SharedPreferences
     fun getPassword(context: Context): String =
         context.getSharedPreferences(PREF, Context.MODE_PRIVATE)
             .getString(KEY_PASSWORD, "") ?: ""
@@ -87,7 +88,8 @@ object ProfilePrefs {
                 apply()
             }
     }
-    // save the new password in SharedPreferences
+
+    // Save password in SharedPreferences
     fun savePassword(context: Context, newPassword: String) {
         context.getSharedPreferences(PREF, Context.MODE_PRIVATE).edit {
             putString(KEY_PASSWORD, newPassword)  // Save the new password
