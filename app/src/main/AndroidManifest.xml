@@ -62,9 +62,9 @@
             android:name=".QuizScience"
             android:exported="true" />
 
-<!--        <activity-->
-<!--            android:name=".QuizScienceSB"-->
-<!--            android:exported="true" />-->
+        <activity
+           android:name=".QuizScienceSB"
+            android:exported="true" />
 
         <activity
             android:name=".QuizMaths"

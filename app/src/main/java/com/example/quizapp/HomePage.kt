@@ -22,10 +22,10 @@ class HomePage : AppCompatActivity() {
             startActivity(intent)
         }
 
-//        binding.button2.setOnClickListener {
-//             val intent = Intent(this, QuizScience::class.java)
-//             startActivity(intent)
-//        }
+        binding.button2.setOnClickListener {
+             val intent = Intent(this, QuizScience::class.java)
+             startActivity(intent)
+        }
 
         binding.button3.setOnClickListener {
              val intent = Intent(this, QuizMaths::class.java)
