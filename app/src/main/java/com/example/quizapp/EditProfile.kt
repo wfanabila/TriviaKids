@@ -96,7 +96,7 @@ class EditProfile : AppCompatActivity() {
                 }
             }
 
-            // save the new username and email if they are not empty
+            // save the new username and email
             if (newUsername.isNotEmpty()) {
                 ProfilePrefs.saveName(this, newUsername)
             }

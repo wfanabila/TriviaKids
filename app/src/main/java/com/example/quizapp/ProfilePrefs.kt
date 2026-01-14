@@ -89,7 +89,7 @@ object ProfilePrefs {
             }
     }
 
-    // Save password in SharedPreferences
+    // save password in SharedPreferences
     fun savePassword(context: Context, newPassword: String) {
         context.getSharedPreferences(PREF, Context.MODE_PRIVATE).edit {
             putString(KEY_PASSWORD, newPassword)  // Save the new password

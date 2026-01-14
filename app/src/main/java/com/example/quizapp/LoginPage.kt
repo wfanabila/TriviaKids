@@ -31,7 +31,7 @@ class LoginPage : AppCompatActivity() {
         if (name == "Leehan" || email == "defaultEmail@example.com") {
             val intent = Intent(this, signup_page::class.java)
             startActivity(intent)
-            finish()  // Close the login page after redirecting to signup
+            finish()
         }
 
         // 1. Initialize the Views
@@ -63,31 +63,30 @@ class LoginPage : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            // Query Firestore to find the email by username
+            // query Firestore to find the email by username
             val db = FirebaseFirestore.getInstance()
             db.collection("users")
-                .whereEqualTo("username", username) // Find the document where the username matches
+                .whereEqualTo("username", username) // find the document where the username matches
                 .get()
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful && !task.result.isEmpty) {
-                        val document = task.result.documents[0] // Get the first document (should be only one)
+                        val document = task.result.documents[0]
                         val email = document.getString("email")
 
                         if (email != null) {
-                            // Use the email to sign in with Firebase Authentication
                             auth.signInWithEmailAndPassword(email, password)
                                 .addOnCompleteListener(this) { authTask ->
                                     if (authTask.isSuccessful) {
-                                        // Login successful
+                                        // login successful
                                         val user = auth.currentUser
                                         Toast.makeText(this, "Login success!", Toast.LENGTH_SHORT).show()
 
-                                        ProfilePrefs.saveName(this, username) // Save username
-                                        ProfilePrefs.saveEmail(this, email) // Save email
+                                        ProfilePrefs.saveName(this, username)
+                                        ProfilePrefs.saveEmail(this, email)
                                         ProfilePrefs.setLoggedIn(this, true)
 
 
-                                        startActivity(Intent(this, HomePage::class.java))  // Navigate to HomePage
+                                        startActivity(Intent(this, HomePage::class.java))
                                         finish()
                                     } else {
                                         Toast.makeText(this, "Wrong password", Toast.LENGTH_SHORT).show()

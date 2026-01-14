@@ -16,7 +16,7 @@ class HomePage : AppCompatActivity() {
 
         if (!ProfilePrefs.isLoggedIn(this)) {
             startActivity(Intent(this, LoginPage::class.java))
-            finish()  // Ensure HomePage is closed and the user is redirected
+            finish()
             return
         }
 

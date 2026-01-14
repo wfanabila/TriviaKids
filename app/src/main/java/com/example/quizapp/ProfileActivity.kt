@@ -180,7 +180,7 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     private fun navigateToLogin() {
-        ProfilePrefs.logout(this) // ensure the logout flag is set
+        ProfilePrefs.logout(this)
         val intent = Intent(this, LoginPage::class.java)
         startActivity(intent)
         finishAffinity()

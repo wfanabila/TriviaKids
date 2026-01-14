@@ -57,8 +57,8 @@ class signup_page : AppCompatActivity() {
                                 .set(userData)
                                 .addOnCompleteListener { firestoreTask ->
                                     if (firestoreTask.isSuccessful) {
-                                        // Successfully saved to Firestore
-                                        // Save the data in SharedPreferences as well
+                                        // successfully saved to Firestore
+                                        // save the data in SharedPreferences
                                         ProfilePrefs.saveName(this, username) // Save username
                                         ProfilePrefs.saveEmail(this, email) // Save email
                                         ProfilePrefs.saveAvatar(this, R.drawable.pfp_ava)
@@ -68,7 +68,6 @@ class signup_page : AppCompatActivity() {
                                         startActivity(Intent(this, LoginPage::class.java))
                                         finish()
                                     } else {
-                                        // Error saving to Firestore
                                         Toast.makeText(this, "Error: ${firestoreTask.exception?.message}", Toast.LENGTH_SHORT).show()
                                     }
                                 }
