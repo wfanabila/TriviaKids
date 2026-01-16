@@ -6,6 +6,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.quizapp.databinding.ScoreAfterGameBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlin.math.roundToInt
 
 class ScoreAfterGame : AppCompatActivity() {
@@ -43,7 +46,33 @@ class ScoreAfterGame : AppCompatActivity() {
 
         // navigate to homepage ( next button )
         binding.save.setOnClickListener {
-            launchActivity(HomePage::class.java)
+            val user = FirebaseAuth.getInstance().currentUser
+            if (user != null) {
+                Toast.makeText(this, "Saving score...", Toast.LENGTH_SHORT).show()
+                val db = FirebaseFirestore.getInstance()
+                val historyData = hashMapOf(
+                    "score" to score,
+                    "totalQuestions" to total,
+                    "quizType" to quizType,
+                    "timestamp" to FieldValue.serverTimestamp()
+                )
+
+                db.collection("users")
+                    .document(user.uid)
+                    .collection("history")
+                    .add(historyData)
+                    .addOnSuccessListener {
+                        Toast.makeText(this, "Score saved successfully!", Toast.LENGTH_SHORT).show()
+                        launchActivity(HomePage::class.java)
+                    }
+                    .addOnFailureListener { e ->
+                        Toast.makeText(this, "Save failed: ${e.message}", Toast.LENGTH_LONG).show()
+                        launchActivity(HomePage::class.java) // Navigate anyway
+                    }
+            } else {
+                Toast.makeText(this, "Not logged in (Guest). Score not saved.", Toast.LENGTH_SHORT).show()
+                launchActivity(HomePage::class.java)
+            }
         }
 
         // nav bar

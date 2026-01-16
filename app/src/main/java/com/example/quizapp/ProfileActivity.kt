@@ -2,17 +2,23 @@ package com.example.quizapp
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.quizapp.databinding.ActivityProfileBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 
 class ProfileActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityProfileBinding
+    private var totalEnglish = 0
+    private var totalMaths = 0
+    private var totalScience = 0
 
     private val editProfileLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -38,6 +44,7 @@ class ProfileActivity : AppCompatActivity() {
         bottomNav.selectedItemId = R.id.profile
 
         loadProfileFromPrefs()
+        fetchAndDisplayScores()
 
         // setting ---> edit profile page
         binding.setting.setOnClickListener { navigateToEditProfile() }
@@ -53,8 +60,8 @@ class ProfileActivity : AppCompatActivity() {
         binding.engTotalScore.setOnClickListener {
             showScorePopup(
                 subject = "ENGLISH",
-                total = binding.engTotalLabel.text.toString(),
-                best = "10",
+                total = totalEnglish.toString(),
+                best = "10", // You can calculate best logic similarly later
                 fastest = "04:07"
             )
         }
@@ -63,7 +70,7 @@ class ProfileActivity : AppCompatActivity() {
         binding.mathTotalScore.setOnClickListener {
             showScorePopup(
                 subject = "MATHEMATICS",
-                total = binding.mathTotalLabel.text.toString(),
+                total = totalMaths.toString(),
                 best = "9",
                 fastest = "02:37"
             )
@@ -73,7 +80,7 @@ class ProfileActivity : AppCompatActivity() {
         binding.scnTotalScore.setOnClickListener {
             showScorePopup(
                 subject = "SCIENCE",
-                total = binding.scnTotalLabel.text.toString(),
+                total = totalScience.toString(),
                 best = "6",
                 fastest = "03:07"
             )
@@ -101,6 +108,46 @@ class ProfileActivity : AppCompatActivity() {
                 else -> false
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        fetchAndDisplayScores()
+    }
+
+    private fun fetchAndDisplayScores() {
+        val user = FirebaseAuth.getInstance().currentUser
+        if (user == null) return
+
+        val db = FirebaseFirestore.getInstance()
+        db.collection("users")
+            .document(user.uid)
+            .collection("history")
+            .get()
+            .addOnSuccessListener { result ->
+                totalEnglish = 0
+                totalMaths = 0
+                totalScience = 0
+
+                for (document in result) {
+                    val score = document.getLong("score")?.toInt() ?: 0
+                    val quizType = document.getString("quizType") ?: ""
+
+                    when (quizType) {
+                        "English" -> totalEnglish += score
+                        "Maths" -> totalMaths += score
+                        "Science" -> totalScience += score
+                    }
+                }
+
+                // Update UI
+                binding.engTotalLabel.text = totalEnglish.toString()
+                binding.mathTotalLabel.text = totalMaths.toString()
+                binding.scnTotalLabel.text = totalScience.toString()
+            }
+            .addOnFailureListener { exception ->
+                Log.w("ProfileActivity", "Error getting documents.", exception)
+            }
     }
 
     private fun loadProfileFromPrefs() {
@@ -180,10 +227,17 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     private fun navigateToLogin() {
+        // Sign out from Firebase
+        FirebaseAuth.getInstance().signOut()
+
+        // Sign out from Local Prefs
         ProfilePrefs.logout(this)
+
         val intent = Intent(this, LoginPage::class.java)
+        // Clear task to prevent going back
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
-        finishAffinity()
+        finish()
     }
 
 

@@ -15,26 +15,26 @@ class HomePage : AppCompatActivity() {
         setContentView(binding.root)
 
         if (!ProfilePrefs.isLoggedIn(this)) {
+            // Safety check: ensure Firebase is also signed out so LoginPage doesn't bounce back
+            com.google.firebase.auth.FirebaseAuth.getInstance().signOut()
+
             startActivity(Intent(this, LoginPage::class.java))
             finish()
             return
         }
 
-        setContentView(R.layout.homepage)
-
-
-        val bottomNav: BottomNavigationView = findViewById(com.example.quizapp.R.id.bottom_nav)
-        bottomNav.selectedItemId = com.example.quizapp.R.id.home
+        val bottomNav: BottomNavigationView = findViewById(R.id.bottom_nav)
+        bottomNav.selectedItemId = R.id.home
 
         binding.button1.setOnClickListener {
             val intent = Intent(this, QuizEnglish::class.java)
             startActivity(intent)
         }
 
-//        binding.button2.setOnClickListener {
-//             val intent = Intent(this, QuizScience::class.java)
-//             startActivity(intent)
-//        }
+        binding.button2.setOnClickListener {
+             val intent = Intent(this, QuizScience::class.java)
+             startActivity(intent)
+        }
 
         binding.button3.setOnClickListener {
              val intent = Intent(this, QuizMaths::class.java)
