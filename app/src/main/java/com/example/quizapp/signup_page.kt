@@ -34,45 +34,62 @@ class signup_page : AppCompatActivity() {
 
         // sign up button
         btnSignup.setOnClickListener {
-            val username = etUsername.text.toString()
-            val email = etEmail.text.toString()
-            val password = etPassword.text.toString()
+            val username = etUsername.text.toString().trim()
+            val email = etEmail.text.toString().trim()
+            val password = etPassword.text.toString().trim()
 
             if (username.isNotEmpty() && email.isNotEmpty() && password.isNotEmpty()) {
-                auth.createUserWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(this) { task ->
-                        if (task.isSuccessful) {
-                            val user = auth.currentUser
-                            val uid = user?.uid ?: ""
+                val db = FirebaseFirestore.getInstance()
+                
+                // Check if username is already taken
+                db.collection("users")
+                    .whereEqualTo("username", username)
+                    .get()
+                    .addOnCompleteListener { usernameTask ->
+                        if (usernameTask.isSuccessful) {
+                            if (!usernameTask.result.isEmpty) {
+                                // Username exists
+                                Toast.makeText(this, "Username already taken. Please choose another.", Toast.LENGTH_SHORT).show()
+                            } else {
+                                // Username is unique, proceed with registration
+                                auth.createUserWithEmailAndPassword(email, password)
+                                    .addOnCompleteListener(this) { task ->
+                                        if (task.isSuccessful) {
+                                            val user = auth.currentUser
+                                            val uid = user?.uid ?: ""
 
-                            // store the username and email in Firestore with the user's UID as the document ID
-                            val userData = hashMapOf(
-                                "username" to username,
-                                "email" to email
-                            )
+                                            // store the username and email in Firestore with the user's UID as the document ID
+                                            val userData = hashMapOf(
+                                                "username" to username,
+                                                "email" to email
+                                            )
 
-                            val db = FirebaseFirestore.getInstance()
-                            db.collection("users")
-                                .document(uid)
-                                .set(userData)
-                                .addOnCompleteListener { firestoreTask ->
-                                    if (firestoreTask.isSuccessful) {
-                                        // successfully saved to Firestore
-                                        // save the data in SharedPreferences
-                                        ProfilePrefs.saveName(this, username) // Save username
-                                        ProfilePrefs.saveEmail(this, email) // Save email
-                                        ProfilePrefs.saveAvatar(this, R.drawable.pfp_ava)
-                                        ProfilePrefs.savePassword(this, password)
+                                            db.collection("users")
+                                                .document(uid)
+                                                .set(userData)
+                                                .addOnCompleteListener { firestoreTask ->
+                                                    if (firestoreTask.isSuccessful) {
+                                                        // successfully saved to Firestore
+                                                        // save the data in SharedPreferences
+                                                        ProfilePrefs.saveName(this, username) // Save username
+                                                        ProfilePrefs.saveEmail(this, email) // Save email
+                                                        ProfilePrefs.saveAvatar(this, R.drawable.pfp_ava)
+                                                        ProfilePrefs.savePassword(this, password)
 
-                                        Toast.makeText(this, "Account Created Successfully!", Toast.LENGTH_SHORT).show()
-                                        startActivity(Intent(this, LoginPage::class.java))
-                                        finish()
-                                    } else {
-                                        Toast.makeText(this, "Error: ${firestoreTask.exception?.message}", Toast.LENGTH_SHORT).show()
+                                                        Toast.makeText(this, "Account Created Successfully!", Toast.LENGTH_SHORT).show()
+                                                        startActivity(Intent(this, LoginPage::class.java))
+                                                        finish()
+                                                    } else {
+                                                        Toast.makeText(this, "Error: ${firestoreTask.exception?.message}", Toast.LENGTH_SHORT).show()
+                                                    }
+                                                }
+                                        } else {
+                                            Toast.makeText(this, "Registration failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
+                                        }
                                     }
-                                }
+                            }
                         } else {
-                            Toast.makeText(this, "Registration failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this, "Error checking username: ${usernameTask.exception?.message}", Toast.LENGTH_LONG).show()
                         }
                     }
             }

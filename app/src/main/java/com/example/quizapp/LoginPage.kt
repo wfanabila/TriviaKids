@@ -65,7 +65,6 @@ class LoginPage : AppCompatActivity() {
                     val account = task.getResult(ApiException::class.java)!!
                     firebaseAuthWithGoogle(account.idToken!!)
                 } catch (e: ApiException) {
-                    // Status code 10 = Developer Error (Check SHA-1/Package Name)
                     Toast.makeText(this, "Google Sign-In failed. Code: ${e.statusCode}", Toast.LENGTH_LONG).show()
                 }
             } else {
@@ -74,60 +73,93 @@ class LoginPage : AppCompatActivity() {
         }
 
         btnGoogleLogin.setOnClickListener {
-            // Force sign-out from Google so the account picker always shows
             googleSignInClient.signOut().addOnCompleteListener {
                 val signInIntent = googleSignInClient.signInIntent
                 googleSignInLauncher.launch(signInIntent)
             }
         }
 
-        // 4. Standard Login Button Logic
+        // 4. Standard Login Button Logic (Username OR Email)
         btnLogin.setOnClickListener {
-            val username = etUsername.text.toString().trim()
-            val password = etPassword.text.toString().trim()
+            val input = etUsername.text.toString().trim()
+            val password = etPassword.text.toString() // Do NOT trim password
 
-            if (username.isEmpty() || password.isEmpty()) {
+            if (input.isEmpty() || password.isEmpty()) {
                 Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            // query Firestore to find the email by username
             val db = FirebaseFirestore.getInstance()
+            
+            // Try to find by Username first
             db.collection("users")
-                .whereEqualTo("username", username) // find the document where the username matches
+                .whereEqualTo("username", input)
                 .get()
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful && !task.result.isEmpty) {
+                        // Found a user with this username
                         val document = task.result.documents[0]
                         val emailFromDb = document.getString("email")
 
                         if (emailFromDb != null) {
-                            auth.signInWithEmailAndPassword(emailFromDb, password)
-                                .addOnCompleteListener(this) { authTask ->
-                                    if (authTask.isSuccessful) {
-                                        // login successful
-                                        val user = auth.currentUser
-                                        Toast.makeText(this, "Login success!", Toast.LENGTH_SHORT).show()
-
-                                        ProfilePrefs.saveName(this, username)
-                                        ProfilePrefs.saveEmail(this, emailFromDb)
-                                        ProfilePrefs.setLoggedIn(this, true)
-
-
-                                        startActivity(Intent(this, HomePage::class.java))
-                                        finish()
-                                    } else {
-                                        Toast.makeText(this, "Wrong password", Toast.LENGTH_SHORT).show()
-                                    }
-                                }
+                            // Login with the email found associated with the username
+                            performLogin(emailFromDb, password, input)
                         } else {
-                            Toast.makeText(this, "Username not found", Toast.LENGTH_SHORT).show()
+                            // Fallback: Try input as email directly
+                            performLogin(input, password, null)
                         }
                     } else {
-                        Toast.makeText(this, "Username not found", Toast.LENGTH_SHORT).show()
+                        // Username not found, try input as email directly
+                        performLogin(input, password, null)
                     }
                 }
         }
+    }
+
+    private fun performLogin(email: String, password: String, username: String?) {
+        auth.signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener(this) { authTask ->
+                if (authTask.isSuccessful) {
+                    Toast.makeText(this, "Login success!", Toast.LENGTH_SHORT).show()
+                    val user = auth.currentUser
+                    
+                    if (username != null) {
+                        // We already know the username from the earlier DB lookup
+                        finalizeLogin(username, email)
+                    } else {
+                        // We logged in via email, need to fetch username from DB
+                         val uid = user?.uid
+                         if (uid != null) {
+                             FirebaseFirestore.getInstance().collection("users").document(uid).get()
+                                .addOnSuccessListener { document ->
+                                    val fetchedUsername = document.getString("username") ?: "User"
+                                    finalizeLogin(fetchedUsername, email)
+                                }
+                                .addOnFailureListener {
+                                    finalizeLogin("User", email)
+                                }
+                         } else {
+                             finalizeLogin("User", email)
+                         }
+                    }
+                } else {
+                    val msg = authTask.exception?.message ?: "Login failed"
+                    if (msg.contains("badly formatted", ignoreCase = true)) {
+                         // This usually means we tried to login with a "Username" as an email and it failed.
+                         Toast.makeText(this, "Login failed. Check your email/username.", Toast.LENGTH_LONG).show()
+                    } else {
+                        Toast.makeText(this, "Error: $msg", Toast.LENGTH_LONG).show()
+                    }
+                }
+            }
+    }
+
+    private fun finalizeLogin(username: String, email: String) {
+        ProfilePrefs.saveName(this, username)
+        ProfilePrefs.saveEmail(this, email)
+        ProfilePrefs.setLoggedIn(this, true)
+        startActivity(Intent(this, HomePage::class.java))
+        finish()
     }
 
     private fun firebaseAuthWithGoogle(idToken: String) {
@@ -135,39 +167,25 @@ class LoginPage : AppCompatActivity() {
         auth.signInWithCredential(credential)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    // Sign in success
                     val user = auth.currentUser
                     val uid = user?.uid ?: return@addOnCompleteListener
                     val email = user.email ?: ""
                     val displayName = user.displayName ?: "User"
 
-                    // Check if user exists in Firestore
                     val db = FirebaseFirestore.getInstance()
                     val userRef = db.collection("users").document(uid)
 
                     userRef.get().addOnSuccessListener { document ->
                         if (document.exists()) {
-                            // User exists, retrieve data
                             val username = document.getString("username") ?: displayName
-                            
-                            ProfilePrefs.saveName(this, username)
-                            ProfilePrefs.saveEmail(this, email)
-                            ProfilePrefs.setLoggedIn(this, true)
-                            // Ideally save avatar if available from Google or DB
-                            
-                            updateUI()
+                            finalizeLogin(username, email)
                         } else {
-                            // New user, create record
                             val userData = hashMapOf(
                                 "username" to displayName,
                                 "email" to email
                             )
-                            
                             userRef.set(userData).addOnSuccessListener {
-                                ProfilePrefs.saveName(this, displayName)
-                                ProfilePrefs.saveEmail(this, email)
-                                ProfilePrefs.setLoggedIn(this, true)
-                                updateUI()
+                                finalizeLogin(displayName, email)
                             }.addOnFailureListener {
                                 Toast.makeText(this, "Failed to create user profile.", Toast.LENGTH_SHORT).show()
                             }
@@ -179,10 +197,5 @@ class LoginPage : AppCompatActivity() {
                     Toast.makeText(this, "Firebase Auth Failed: ${task.exception?.message}", Toast.LENGTH_LONG).show()
                 }
             }
-    }
-
-    private fun updateUI() {
-        startActivity(Intent(this, HomePage::class.java))
-        finish()
     }
 }
