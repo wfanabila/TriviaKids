@@ -11,7 +11,7 @@ import com.example.quizapp.databinding.ActivityProfileBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-
+import com.google.firebase.firestore.FieldValue
 
 class ProfileActivity : AppCompatActivity() {
 
@@ -19,6 +19,12 @@ class ProfileActivity : AppCompatActivity() {
     private var totalEnglish = 0
     private var totalMaths = 0
     private var totalScience = 0
+    private var bestEnglish = 0
+    private var bestMaths = 0
+    private var bestScience = 0
+    private var fastestEnglish = "00:00"
+    private var fastestMaths = "00:00"
+    private var fastestScience = "00:00"
 
     private val editProfileLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -61,8 +67,8 @@ class ProfileActivity : AppCompatActivity() {
             showScorePopup(
                 subject = "ENGLISH",
                 total = totalEnglish.toString(),
-                best = "10", // You can calculate best logic similarly later
-                fastest = "04:07"
+                best = bestEnglish.toString(),
+                fastest = fastestEnglish.toString()
             )
         }
 
@@ -71,8 +77,8 @@ class ProfileActivity : AppCompatActivity() {
             showScorePopup(
                 subject = "MATHEMATICS",
                 total = totalMaths.toString(),
-                best = "9",
-                fastest = "02:37"
+                best = bestMaths.toString(),
+                fastest = fastestMaths.toString()
             )
         }
 
@@ -81,8 +87,8 @@ class ProfileActivity : AppCompatActivity() {
             showScorePopup(
                 subject = "SCIENCE",
                 total = totalScience.toString(),
-                best = "6",
-                fastest = "03:07"
+                best = bestScience.toString(),
+                fastest = fastestScience.toString()
             )
         }
 
@@ -116,39 +122,117 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     private fun fetchAndDisplayScores() {
-        val user = FirebaseAuth.getInstance().currentUser
-        if (user == null) return
-
+        val user = FirebaseAuth.getInstance().currentUser ?: return
         val db = FirebaseFirestore.getInstance()
+
         db.collection("users")
             .document(user.uid)
             .collection("history")
             .get()
             .addOnSuccessListener { result ->
-                totalEnglish = 0
-                totalMaths = 0
-                totalScience = 0
+                totalEnglish = 0; totalMaths = 0; totalScience = 0
+                bestEnglish = 0; bestMaths = 0; bestScience = 0
+                fastestEnglish = "00:00"; fastestMaths = "00:00"; fastestScience = "00:00"
 
                 for (document in result) {
-                    val score = document.getLong("score")?.toInt() ?: 0
                     val quizType = document.getString("quizType") ?: ""
+                    val score = document.getLong("score")?.toInt() ?: 0
+
+                    val timeRecord = document.getString("totalTime") ?: "00:00"
 
                     when (quizType) {
-                        "English" -> totalEnglish += score
-                        "Maths" -> totalMaths += score
-                        "Science" -> totalScience += score
+                        "English" -> {
+                            totalEnglish += score
+                            if (score > bestEnglish) bestEnglish = score
+                            // compare to find the actual fastest time
+                            if (isFaster(timeRecord, fastestEnglish)) fastestEnglish = timeRecord
+                        }
+                        "Maths" -> {
+                            totalMaths += score
+                            if (score > bestMaths) bestMaths = score
+                            if (isFaster(timeRecord, fastestMaths)) fastestMaths = timeRecord
+                        }
+                        "Science" -> {
+                            totalScience += score
+                            if (score > bestScience) bestScience = score
+                            if (isFaster(timeRecord, fastestScience)) fastestScience = timeRecord
+                        }
                     }
                 }
 
-                // Update UI
                 binding.engTotalLabel.text = totalEnglish.toString()
                 binding.mathTotalLabel.text = totalMaths.toString()
                 binding.scnTotalLabel.text = totalScience.toString()
             }
+    }
+
+    private fun updateSubjectScore(quizType: String, score: Int, time: String) {
+        val user = FirebaseAuth.getInstance().currentUser
+        if (user == null) return
+
+        val db = FirebaseFirestore.getInstance()
+        val userRef = db.collection("users").document(user.uid)
+        val quizRef = userRef.collection("history").document(quizType)
+
+        quizRef.get()
+            .addOnSuccessListener { document ->
+                if (document.exists()) {
+                    val currentBestScore = document.getLong("bestScore")?.toInt() ?: 0
+                    val currentFastestTime = document.getString("fastestTime") ?: "00:00"
+
+                    // check if the new score is better than the current best score
+                    val newBestScore = if (score > currentBestScore) score else currentBestScore
+
+                    if (newBestScore != currentBestScore) {
+                        quizRef.update("bestScore", newBestScore)
+                            .addOnSuccessListener {
+                                Log.d("ProfileActivity", "Successfully updated best score")
+                            }
+                            .addOnFailureListener { e ->
+                                Log.w("ProfileActivity", "Error updating best score", e)
+                            }
+                    }
+
+                    // compare and update fastest time only if the score is the best
+                    var newFastestTime = currentFastestTime
+                    if (score == newBestScore) {
+                        // check if the new time is faster
+                        newFastestTime = if (isFaster(time, currentFastestTime)) time else currentFastestTime
+                    }
+
+                    // update fastest time if it's different
+                    if (newFastestTime != currentFastestTime) {
+                        quizRef.update("fastestTime", newFastestTime)
+                            .addOnSuccessListener {
+                                Log.d("ProfileActivity", "Successfully updated fastest time")
+                            }
+                            .addOnFailureListener { e ->
+                                Log.w("ProfileActivity", "Error updating fastest time", e)
+                            }
+                    }
+                }
+            }
             .addOnFailureListener { exception ->
-                Log.w("ProfileActivity", "Error getting documents.", exception)
+                Log.w("ProfileActivity", "Error getting document.", exception)
             }
     }
+
+    private fun isFaster(newTime: String, currentFastestTime: String): Boolean {
+        if (currentFastestTime == "00:00") return true
+
+        val newTimeParts = newTime.split(":").map { it.toIntOrNull() ?: 0 }
+        val currentTimeParts = currentFastestTime.split(":").map { it.toIntOrNull() ?: 0 }
+
+        if (newTimeParts.size != 2 || currentTimeParts.size != 2) return false
+
+        val newTimeInSeconds = newTimeParts[0] * 60 + newTimeParts[1]
+        val currentTimeInSeconds = currentTimeParts[0] * 60 + currentTimeParts[1]
+
+        if (newTimeInSeconds <= 0) return false
+
+        return newTimeInSeconds < currentTimeInSeconds
+    }
+
 
     private fun loadProfileFromPrefs() {
         // load the data from SharedPreferences
@@ -167,19 +251,19 @@ class ProfileActivity : AppCompatActivity() {
             "ENGLISH" -> layoutInflater.inflate(R.layout.dialog_eng_score_details, null)
             "MATHEMATICS" -> layoutInflater.inflate(R.layout.dialog_math_score_details, null)
             "SCIENCE" -> layoutInflater.inflate(R.layout.dialog_scn_score_details, null)
-            else -> layoutInflater.inflate(R.layout.dialog_eng_score_details, null) // Default case
+            else -> layoutInflater.inflate(R.layout.dialog_eng_score_details, null)
         }
 
         val titleTv = dialogView.findViewById<TextView>(R.id.dialogTitle)
         val totalTv = dialogView.findViewById<TextView>(R.id.dialogTotal)
         val bestTv = dialogView.findViewById<TextView>(R.id.dialogBest)
-        val fastestTv = dialogView.findViewById<TextView>(R.id.dialogFastest)
+        val fastestTv = dialogView.findViewById<TextView>(R.id.dialogFastestTime)
         val subjectTv = dialogView.findViewById<TextView>(R.id.dialogSubject)
 
         titleTv.text = getString(R.string.total_score_title)
         totalTv.text = total
-        bestTv.text = getString(R.string.best_score_value, best)
-        fastestTv.text = getString(R.string.fastest_time_value, fastest)
+        bestTv.text = ": $best"
+        fastestTv.text = ": $fastest"
         subjectTv.text = getString(R.string.subject_score_label, subject)
 
         val dialog = AlertDialog.Builder(this)
@@ -215,7 +299,6 @@ class ProfileActivity : AppCompatActivity() {
         dialogView.setOnClickListener { dialog.dismiss() }
     }
 
-
     private fun navigateToEditProfile() {
         val intent = Intent(this, EditProfile::class.java)
         editProfileLauncher.launch(intent)
@@ -227,18 +310,17 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     private fun navigateToLogin() {
-        // Sign out from Firebase
+        // sign out from Firebase
         FirebaseAuth.getInstance().signOut()
 
-        // Sign out from Local Prefs
+        // sign out from Local Prefs
         ProfilePrefs.logout(this)
 
         val intent = Intent(this, LoginPage::class.java)
-        // Clear task to prevent going back
+        // clear task to prevent going back
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
         finish()
     }
-
 
 }

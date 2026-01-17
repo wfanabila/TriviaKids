@@ -51,11 +51,15 @@
     <string name="scn_label">SCIENCE\n  SCORE</string>
 
     <string name="best_score_label">BEST SCORE</string>
-    <string name="fastest_time_label">FASTEST TIME</string>
+    <string name="fastest_time">FASTEST TIME</string>
 
 
     // page label
     <string name="profile_page"> PROFILE </string>
     <string name="edit_profile_page"> EDIT PROFILE </string>
+
+    <string name="default_web_client_id">YOUR_GOOGLE_OAUTH_CLIENT_ID.apps.googleusercontent.com</string>
+
+
 
 </resources>

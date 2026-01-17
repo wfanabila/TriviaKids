@@ -32,6 +32,12 @@ class ScoreAfterGame : AppCompatActivity() {
         // display score
         binding.scoreText.text = "$score / $total"
 
+        // Format and display the timer
+        val minutes = (totalTime / 60000).toInt()
+        val seconds = ((totalTime % 60000) / 1000).toInt()
+        val formattedTime = String.format("%02d:%02d", minutes, seconds)
+        binding.dialogQuizCount.text = formattedTime
+
         binding.closeButton.setOnClickListener { finish() }
 
         // play again based on prev subject
@@ -39,7 +45,7 @@ class ScoreAfterGame : AppCompatActivity() {
             when (quizType) {
                 "English" -> launchActivity(QuizEnglish::class.java)
                 "Maths" -> launchActivity(QuizMaths::class.java)
-//                "Science" -> launchActivity(QuizScience::class.java)
+                "Science" -> launchActivity(QuizScience::class.java)
                 else -> Toast.makeText(this, "Invalid quiz type", Toast.LENGTH_SHORT).show()
             }
         }
@@ -54,7 +60,8 @@ class ScoreAfterGame : AppCompatActivity() {
                     "score" to score,
                     "totalQuestions" to total,
                     "quizType" to quizType,
-                    "timestamp" to FieldValue.serverTimestamp()
+                    "timestamp" to FieldValue.serverTimestamp(),
+                    "totalTime" to formattedTime
                 )
 
                 db.collection("users")
@@ -118,5 +125,6 @@ class ScoreAfterGame : AppCompatActivity() {
         val intent = Intent(this, EditProfile::class.java)
         startActivity(intent)
     }
+
 
 }
