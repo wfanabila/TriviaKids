@@ -2,6 +2,7 @@ package com.example.quizapp
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -10,13 +11,15 @@ import androidx.appcompat.app.AlertDialog // alert dialog ~~
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.EmailAuthProvider
-
-
+import com.google.firebase.firestore.FirebaseFirestore
 
 class EditProfile : AppCompatActivity() {
 
     private lateinit var binding: EditProfileBinding
     private var selectedAvatar: Int? = null
+    // firebase instances
+    private val auth = FirebaseAuth.getInstance()
+    private val db = FirebaseFirestore.getInstance()
 
     private val editAvatarLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -25,9 +28,6 @@ class EditProfile : AppCompatActivity() {
                 if (avatarResId != -1) {
                     selectedAvatar = avatarResId
                     binding.imageView.setImageResource(avatarResId)
-
-                    // update to the latest avatar everytime
-                    ProfilePrefs.saveAvatar(this, avatarResId)
                 }
             }
         }
@@ -53,150 +53,194 @@ class EditProfile : AppCompatActivity() {
             val currentPassword = binding.currPass.text.toString().trim()
             val newPassword = binding.newPass.text.toString().trim()
 
-            // check if any field is filled. only need the current and new passwords if the user wants to change the password
-            if (newUsername.isEmpty() && newEmail.isEmpty() && currentPassword.isEmpty() && newPassword.isEmpty() && selectedAvatar == null) {
-                // if the user doesn't want to change anything, just exit
+            val currentStoredUsername = ProfilePrefs.getName(this)
+            val currentStoredEmail = ProfilePrefs.getEmail(this)
+            val currentStoredAvatar = ProfilePrefs.getAvatar(this)
+
+            val isUsernameChanged = newUsername.isNotEmpty() && newUsername != currentStoredUsername
+            val isEmailChanged = newEmail.isNotEmpty() && newEmail != currentStoredEmail
+            val isPasswordChanged = currentPassword.isNotEmpty() && newPassword.isNotEmpty()
+
+            val isAvatarChanged = selectedAvatar != null && selectedAvatar != currentStoredAvatar
+
+            if (!isUsernameChanged && !isEmailChanged && !isPasswordChanged && !isAvatarChanged) {
                 Toast.makeText(this, "No changes detected", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            // validate current password
-            if (currentPassword.isNotEmpty() && newPassword.isNotEmpty()) {
-                val savedPassword = ProfilePrefs.getPassword(this)
+            binding.save.isEnabled = false
 
-                if (currentPassword != savedPassword) {
-                    Toast.makeText(this, "Incorrect current password. Please try again.", Toast.LENGTH_SHORT).show()
-                    return@setOnClickListener
-                }
-
-                // reauthenticate the user with the current password before updating
-                val user = FirebaseAuth.getInstance().currentUser
-                val email = user?.email
-
-                if (email != null) {
-                    val credential = EmailAuthProvider.getCredential(email, currentPassword)
-
-                    user.reauthenticate(credential).addOnCompleteListener { reAuthTask ->
-                        if (reAuthTask.isSuccessful) {
-                            // if reauthentication is successful, update the password
-                            user.updatePassword(newPassword).addOnCompleteListener { updatePasswordTask ->
-                                if (updatePasswordTask.isSuccessful) {
-                                    // save the new password to SharedPreferences
-                                    ProfilePrefs.savePassword(this, newPassword)
-                                    Toast.makeText(this, "Password updated successfully!", Toast.LENGTH_SHORT).show()
-                                } else {
-                                    Toast.makeText(this, "Failed to update password: ${updatePasswordTask.exception?.message}", Toast.LENGTH_SHORT).show()
-                                }
-                            }
-                        } else {
-                            Toast.makeText(this, "Reauthentication failed. Please try again.", Toast.LENGTH_SHORT).show()
-                            return@addOnCompleteListener
-                        }
-                    }
-                }
+            if (isAvatarChanged && !isUsernameChanged && !isEmailChanged && !isPasswordChanged) {
+                completeFinalSave(currentStoredUsername, currentStoredEmail)
+                return@setOnClickListener
             }
 
-            // save the new username and email
-            if (newUsername.isNotEmpty()) {
-                ProfilePrefs.saveName(this, newUsername)
+            // multi-step validation for username and email uniqueness
+            validateUniqueness(newUsername, newEmail, isUsernameChanged, isEmailChanged) {
+                startUpdateProcess(newUsername, newEmail, currentPassword, newPassword, isUsernameChanged, isEmailChanged)
             }
-            if (newEmail.isNotEmpty()) {
-                ProfilePrefs.saveEmail(this, newEmail)
-            }
-
-            // save selected avatar
-            selectedAvatar?.let { ProfilePrefs.saveAvatar(this, it) }
-
-            Toast.makeText(this, "Profile updated successfully!", Toast.LENGTH_SHORT).show()
-
-            // pass the updated data back to the calling activity (ProfileActivity)
-            val resultIntent = Intent().apply {
-                putExtra("newUsername", newUsername)
-                putExtra("newEmail", newEmail)
-                selectedAvatar?.let { putExtra("selectedAvatar", it) }
-            }
-            setResult(RESULT_OK, resultIntent)
-            finish()
         }
 
-
-        binding.closeButton.setOnClickListener {
-            showDiscardDialog()
-        }
+        binding.closeButton.setOnClickListener { showDiscardDialog() }
 
         // nav bar
         bottomNav.setOnItemSelectedListener { item ->
             when (item.itemId) {
-                R.id.home -> {
-                    navigateToHomePage()
-                    true
-                }
-                R.id.profile -> {
-                    navigateToProfileActivity()
-                    true
-                }
-                R.id.setting -> {
-                    true
-                }
+                R.id.home -> { navigateToHomePage(); true }
+                R.id.profile -> { navigateToProfileActivity(); true }
+                R.id.setting -> true
                 else -> false
             }
         }
     }
 
-    private fun loadCurrentProfileData() {
-        binding.username.setText(ProfilePrefs.getName(this))
-        binding.email.setText(ProfilePrefs.getEmail(this))
-        val avatar = ProfilePrefs.getAvatar(this)
-        binding.imageView.setImageResource(avatar)
-        selectedAvatar = avatar
+    // check if both new username and new email are available
+    private fun validateUniqueness(name: String, mail: String, nameChanged: Boolean, mailChanged: Boolean, onSuccess: () -> Unit) {
+        if (nameChanged) {
+            db.collection("users").whereEqualTo("username", name).get().addOnSuccessListener { nameDocs ->
+                if (!nameDocs.isEmpty) {
+                    Toast.makeText(this, "Username already taken.", Toast.LENGTH_SHORT).show()
+                    binding.save.isEnabled = true
+                } else {
+                    checkEmailUniqueness(mail, mailChanged, onSuccess)
+                }
+            }
+        } else {
+            checkEmailUniqueness(mail, mailChanged, onSuccess)
+        }
     }
 
-    private fun saveProfileChanges() {
-        val newUsername = binding.username.text.toString().trim()
-        val newEmail = binding.email.text.toString().trim()
+    private fun checkEmailUniqueness(mail: String, mailChanged: Boolean, onSuccess: () -> Unit) {
+        if (mailChanged) {
+            db.collection("users").whereEqualTo("email", mail).get().addOnSuccessListener { mailDocs ->
+                if (!mailDocs.isEmpty) {
+                    Toast.makeText(this, "Email already in use by another account.", Toast.LENGTH_SHORT).show()
+                    binding.save.isEnabled = true
+                } else {
+                    onSuccess()
+                }
+            }
+        } else {
+            onSuccess()
+        }
+    }
 
-        if (newUsername.isEmpty() || newEmail.isEmpty()) {
-            Toast.makeText(this, "Username and Email are required", Toast.LENGTH_SHORT).show()
+    // handle firestore updates and local saving
+    private fun startUpdateProcess(username: String, email: String, currPass: String, newPass: String, userChanged: Boolean, emailChanged: Boolean) {
+        val user = auth.currentUser ?: return
+        val updates = mutableMapOf<String, Any>()
+        if (userChanged) updates["username"] = username
+        if (emailChanged) updates["email"] = email
+
+        // password or email changes require reauthentication
+        if (emailChanged || (currPass.isNotEmpty() && newPass.isNotEmpty())) {
+            handleSecureUpdates(username, email, currPass, newPass, updates, emailChanged)
+        } else if (updates.isNotEmpty()) {
+            // only username changed
+            db.collection("users").document(user.uid).update(updates).addOnSuccessListener {
+                completeFinalSave(username, email)
+            }
+        } else {
+            completeFinalSave(username, email)
+        }
+    }
+
+    private fun handleSecureUpdates(username: String, email: String, currPass: String, newPass: String, updates: Map<String, Any>, emailChanged: Boolean) {
+        val user = auth.currentUser ?: return
+        val savedPass = ProfilePrefs.getPassword(this)
+
+        if (currPass != savedPass) {
+            Toast.makeText(this, "Incorrect current password.", Toast.LENGTH_SHORT).show()
+            binding.save.isEnabled = true
             return
         }
 
-        ProfilePrefs.saveName(this, newUsername)
-        ProfilePrefs.saveEmail(this, newEmail)
-        selectedAvatar?.let { ProfilePrefs.saveAvatar(this, it) }
+        val credential = EmailAuthProvider.getCredential(user.email!!, currPass)
+        user.reauthenticate(credential).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                // if email changed, update Firebase Auth Email
+                if (emailChanged) {
+                    user.updateEmail(email).addOnCompleteListener { emailTask ->
+                        if (emailTask.isSuccessful) {
+                            proceedToPasswordAndFirestore(username, email, newPass, updates)
+                        } else {
+                            Toast.makeText(this, "Failed to update email: ${emailTask.exception?.message}", Toast.LENGTH_SHORT).show()
+                            binding.save.isEnabled = true
+                        }
+                    }
+                } else {
+                    proceedToPasswordAndFirestore(username, email, newPass, updates)
+                }
+            } else {
+                Toast.makeText(this, "Reauthentication failed.", Toast.LENGTH_SHORT).show()
+                binding.save.isEnabled = true
+            }
+        }
+    }
 
-        val resultIntent = Intent().apply {
-            putExtra("newUsername", newUsername)
-            putExtra("newEmail", newEmail)
-            selectedAvatar?.let { putExtra("selectedAvatar", it) }
+    private fun proceedToPasswordAndFirestore(name: String, mail: String, newPass: String, updates: Map<String, Any>) {
+        val user = auth.currentUser ?: return
+
+        val finishFirestore = {
+            if (updates.isNotEmpty()) {
+                db.collection("users").document(user.uid).update(updates).addOnSuccessListener {
+                    completeFinalSave(name, mail)
+                }
+            } else {
+                completeFinalSave(name, mail)
+            }
         }
 
+        if (newPass.isNotEmpty()) {
+            user.updatePassword(newPass).addOnCompleteListener { pwTask ->
+                if (pwTask.isSuccessful) {
+                    ProfilePrefs.savePassword(this, newPass)
+                    finishFirestore()
+                } else {
+                    Toast.makeText(this, "Password update failed.", Toast.LENGTH_SHORT).show()
+                    binding.save.isEnabled = true
+                }
+            }
+        } else {
+            finishFirestore()
+        }
+    }
+
+    private fun completeFinalSave(username: String, email: String) {
+        if (username.isNotEmpty()) ProfilePrefs.saveName(this, username)
+        if (email.isNotEmpty()) ProfilePrefs.saveEmail(this, email)
+
+        selectedAvatar?.let { ProfilePrefs.saveAvatar(this, it) }
+
+        Toast.makeText(this, "Profile updated successfully!", Toast.LENGTH_SHORT).show()
+
+        val resultIntent = Intent().apply {
+            putExtra("newUsername", username)
+            putExtra("newEmail", email)
+            selectedAvatar?.let { putExtra("selectedAvatar", it) }
+        }
         setResult(RESULT_OK, resultIntent)
         finish()
     }
 
-    // alert dialog to confirm whether the user wants to discard changes ~~
+    private fun loadCurrentProfileData() {
+        val currentAvatar = ProfilePrefs.getAvatar(this)
+        binding.username.setText(ProfilePrefs.getName(this))
+        binding.email.setText(ProfilePrefs.getEmail(this))
+        binding.imageView.setImageResource(currentAvatar)
+
+        selectedAvatar = currentAvatar
+    }
+
     private fun showDiscardDialog() {
         AlertDialog.Builder(this)
             .setTitle("Discard changes?")
             .setMessage("Your changes will not be saved.")
-            .setPositiveButton("Discard") { dialog, _ ->
-                dialog.dismiss()
-                finish()
-            }
-            .setNegativeButton("Cancel") { dialog, _ ->
-                dialog.dismiss()
-            }
+            .setPositiveButton("Discard") { dialog, _ -> finish() }
+            .setNegativeButton("Cancel") { dialog, _ -> dialog.dismiss() }
             .show()
     }
 
-
-    private fun navigateToProfileActivity() {
-        val intent = Intent(this, ProfileActivity::class.java)
-        startActivity(intent)
-    }
-
-    private fun navigateToHomePage() {
-        val intent = Intent(this, HomePage::class.java)
-        startActivity(intent)
-    }
+    private fun navigateToProfileActivity() { startActivity(Intent(this, ProfileActivity::class.java)) }
+    private fun navigateToHomePage() { startActivity(Intent(this, HomePage::class.java)) }
 }
