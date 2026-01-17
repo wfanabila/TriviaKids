@@ -59,6 +59,8 @@
                 android:layout_marginBottom="12dp"
                 android:background="@drawable/edit_text_rounded_corner"
                 android:hint="  Enter Username or Email"
+                android:paddingStart="10dp"
+                android:paddingLeft="10dp"
                 android:inputType="text" />
 
             <TextView
@@ -75,6 +77,8 @@
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="16dp"
                 android:background="@drawable/edit_text_rounded_corner"
+                android:paddingStart="10dp"
+                android:paddingLeft="10dp"
                 android:hint="  Enter Password"
                 android:inputType="textPassword" />
 
