@@ -1,6 +1,8 @@
 package com.example.quizapp
 
 import android.content.Intent
+import android.graphics.drawable.AnimationDrawable
+import android.widget.ImageView
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.quizapp.databinding.HomepageBinding

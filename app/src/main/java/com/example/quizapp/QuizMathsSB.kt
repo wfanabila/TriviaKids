@@ -16,15 +16,17 @@ class QuizMathsSB : AppCompatActivity() {
     private val questions = arrayOf("C _ R C L E",
         "_ D D I T I O N",
         "E _ U A L",
-        "M U L T I P L _")
+        "M U L T I P L _",
+        "_ I V I S I O N")
 
     private val options = arrayOf(arrayOf("A", "I", "L"),
         arrayOf("A", "S", "L"),
         arrayOf("B", "R", "Q"),
-        arrayOf("A", "Y", "L"))
+        arrayOf("A", "Y", "L"),
+        arrayOf("D", "B", "R"))
 
-    private val photos = arrayOf(R.drawable.circle, R.drawable.addition, R.drawable.equal, R.drawable.multiply)
-    private val correctAnswers = arrayOf(1, 0, 2, 1)
+    private val photos = arrayOf(R.drawable.circle, R.drawable.addition, R.drawable.equal, R.drawable.multiply, R.drawable.division)
+    private val correctAnswers = arrayOf(1, 0, 2, 1, 0)
 
     private var currentQuestionIndex = 0
     private var score = 0

@@ -28,6 +28,7 @@ class QuizScienceSB : AppCompatActivity() {
     private val photos = arrayOf(R.drawable.bee, R.drawable.head, R.drawable.gold, R.drawable.soil, R.drawable.water)
     private val correctAnswers = arrayOf(1, 2, 1, 2, 0)
 
+
     private var currentQuestionIndex = 0
     private var score = 0
 

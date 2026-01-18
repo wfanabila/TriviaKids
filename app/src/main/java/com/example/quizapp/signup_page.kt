@@ -21,16 +21,11 @@ class signup_page : AppCompatActivity() {
 
         auth = FirebaseAuth.getInstance()
 
-        val btnClose = findViewById<ImageView>(R.id.btnClose)
         val btnSignup = findViewById<Button>(R.id.btnSignUp)
         val etUsername = findViewById<EditText>(R.id.etUsername)
         val etEmail = findViewById<EditText>(R.id.etEmail)
         val etPassword = findViewById<EditText>(R.id.etPassword)
 
-        // close button
-        btnClose.setOnClickListener {
-            finish()
-        }
 
         // sign up button
         btnSignup.setOnClickListener {

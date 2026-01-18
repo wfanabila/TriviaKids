@@ -16,16 +16,18 @@ class QuizScience : AppCompatActivity() {
     private val questions = arrayOf("This is a picture of?",
         "What body part shown below?",
         "What do you call this?",
-        "Name this sense organ"
+        "Name this sense organ",
+        "This is _____"
     )
 
     private val options = arrayOf(arrayOf("Eye", "Mouth", "Ear", "Hand"),
         arrayOf("Eye", "Mouth", "Ear", "Hand"),
         arrayOf("Eye", "Mouth", "Ear", "Hand"),
-        arrayOf("Eye", "Mouth", "Ear", "Hand"))
+        arrayOf("Eye", "Mouth", "Ear", "Hand"),
+        arrayOf("Nose", "Mouth", "Ear", "Hand"))
 
-    private val photos = arrayOf(R.drawable.ear, R.drawable.mouth, R.drawable.hand, R.drawable.eye)
-    private val correctAnswers = arrayOf(2, 1, 3, 0)
+    private val photos = arrayOf(R.drawable.ear, R.drawable.mouth, R.drawable.hand, R.drawable.eye, R.drawable.nose)
+    private val correctAnswers = arrayOf(2, 1, 3, 0, 0)
 
     private var currentQuestionIndex = 0
     private var score = 0

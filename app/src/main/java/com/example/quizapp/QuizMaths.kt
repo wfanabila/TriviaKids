@@ -15,14 +15,18 @@ class QuizMaths : AppCompatActivity() {
 
     private val questions = arrayOf("What shape is this?",
         "How many fruits are there?",
-        "What time is it?")
+        "What time is it?",
+        "What shape is this?",
+        "This is ______")
 
     private val options = arrayOf(arrayOf("Triangle", "Rectangle", "Square", "Circle"),
         arrayOf("Seven", "Two", "Six", "Nine"),
-        arrayOf("1:45", "1:09", "9:01", "9:05"))
+        arrayOf("1:45", "1:09", "9:01", "9:05"),
+        arrayOf("Triangle", "Rectangle", "Square", "Circle"),
+        arrayOf("Triangle", "Pentagon", "Square", "Circle"))
 
-    private val photos = arrayOf(R.drawable.triangle, R.drawable.count, R.drawable.clock)
-    private val correctAnswers = arrayOf(0, 2, 3)
+    private val photos = arrayOf(R.drawable.triangle, R.drawable.count, R.drawable.clock, R.drawable.square, R.drawable.pentagon)
+    private val correctAnswers = arrayOf(0, 2, 3, 2, 1)
 
     private var currentQuestionIndex = 0
     private var score = 0
